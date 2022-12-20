@@ -50,9 +50,11 @@ export default function Application() {
 	}, [submitValue]);
 
 	return (
-		<div>
+		<div className='container mx-auto p-4'>
 			<form onSubmit={handleSubmit}>
-				<button type='submit'>
+				<button
+					type='submit'
+					className='mr-4 border-solid border-2 border-indigo-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-indigo-600 text-white'>
 					<span>Search</span>
 				</button>
 
@@ -62,9 +64,19 @@ export default function Application() {
 					placeholder='Search a city'
 					onChange={handleChange}
 					value={changeValue}
+					className='border-solid border-2 border-indigo-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold'
 				/>
 			</form>
-			{submitValue && <WeatherPanel cityWeather={cityWeather} />}
+			{submitValue && (
+				<>
+					{/* <div className='columns-4 py-6'> */}
+					<WeatherPanel cityWeather={cityWeather} />
+					{/* <WeatherPanel cityWeather={cityWeather} />
+						<WeatherPanel cityWeather={cityWeather} />
+						<WeatherPanel cityWeather={cityWeather} />
+					</div> */}
+				</>
+			)}
 		</div>
 	);
 }
