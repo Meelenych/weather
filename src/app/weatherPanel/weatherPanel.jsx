@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function WeatherPanel({ cityWeather }) {
 	return (
-		<div className='bg-indigo-100 rounded-md shadow-xl p-3 w-1/4 mt-4'>
+		<div className='bg-indigo-100 rounded-md shadow-xl p-3 w-1/4 mt-4 w-full'>
 			<p className='text-xl font-medium text-indigo-700 '>
 				Country: {cityWeather?.location.country}
 			</p>

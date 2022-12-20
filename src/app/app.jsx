@@ -3,11 +3,13 @@ import React from 'react';
 import { url } from '../api/api';
 import WeatherPanel from './weatherPanel/weatherPanel';
 import axios from 'axios';
+import { uid } from 'uid';
 
 export default function Application() {
-	const [cityWeather, setCityWeather] = useState();
+	const [cityWeather, setCityWeather] = useState(null);
 	const [submitValue, setSubmitValue] = useState('Vienna');
 	const [changeValue, setChangeValue] = useState('');
+	const [citiesWeather, setCitiesWeather] = useState([]);
 
 	const onFormSubmit = data => {
 		setSubmitValue(data);
@@ -35,16 +37,19 @@ export default function Application() {
 	const current = async () => {
 		try {
 			const res = await axios.get(url + submitValue);
-			console.log(res.data);
 			return res.data;
 		} catch (error) {
-			console.log(error.message);
+			console.error(error.message);
 		}
+	};
+
+	const addCity = () => {
+		setCitiesWeather(citiesWeather, citiesWeather.push(cityWeather));
+		console.log(citiesWeather);
 	};
 
 	useEffect(() => {
 		current().then(data => {
-			console.log(data);
 			setCityWeather(data);
 		});
 	}, [submitValue]);
@@ -66,17 +71,26 @@ export default function Application() {
 					value={changeValue}
 					className='border-solid border-2 border-indigo-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold'
 				/>
+
+				<button
+					onClick={addCity}
+					type='button'
+					className='ml-4 border-solid border-2 border-indigo-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-indigo-600 text-white'>
+					<span>Add city</span>
+				</button>
 			</form>
-			{submitValue && (
-				<>
-					{/* <div className='columns-4 py-6'> */}
-					<WeatherPanel cityWeather={cityWeather} />
-					{/* <WeatherPanel cityWeather={cityWeather} />
-						<WeatherPanel cityWeather={cityWeather} />
-						<WeatherPanel cityWeather={cityWeather} />
-					</div> */}
-				</>
-			)}
+
+			{submitValue && <WeatherPanel cityWeather={cityWeather} />}
+
+			<ul className='grid grid-cols-4 gap-4'>
+				{citiesWeather.map(element => (
+					<li
+						key={uid()}
+						className='basis-1/4'>
+						<WeatherPanel cityWeather={element} />
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 }
