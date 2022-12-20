@@ -5,7 +5,7 @@ import WeatherPanel from './weatherPanel/weatherPanel';
 import axios from 'axios';
 
 export default function Application() {
-	const [cityWeather, setCityWeather] = useState([]);
+	const [cityWeather, setCityWeather] = useState();
 	const [submitValue, setSubmitValue] = useState('Vienna');
 	const [changeValue, setChangeValue] = useState('');
 
