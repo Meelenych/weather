@@ -31,7 +31,6 @@ export default function Application() {
 		}
 
 		onFormSubmit(changeValue.toLowerCase().trim());
-		clearForm();
 	};
 
 	const current = async () => {
@@ -45,7 +44,12 @@ export default function Application() {
 
 	const addCity = () => {
 		setCitiesWeather(citiesWeather, citiesWeather.push(cityWeather));
-		console.log(citiesWeather);
+		clearForm();
+	};
+
+	const unpin = () => {
+		const index = citiesWeather.indexOf(0);
+		setCitiesWeather(citiesWeather, citiesWeather.splice(index, 1));
 	};
 
 	useEffect(() => {
@@ -84,11 +88,12 @@ export default function Application() {
 
 			<ul className='grid grid-cols-4 gap-4'>
 				{citiesWeather.map(element => (
-					<li
+					<WeatherPanel
 						key={uid()}
-						className='basis-1/4'>
-						<WeatherPanel cityWeather={element} />
-					</li>
+						className='basis-1/4'
+						cityWeather={element}
+						unpin={unpin}
+					/>
 				))}
 			</ul>
 		</div>
