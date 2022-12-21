@@ -84,7 +84,12 @@ export default function Application() {
 				</button>
 			</form>
 
-			{submitValue && <WeatherPanel cityWeather={cityWeather} />}
+			{submitValue && (
+				<WeatherPanel
+					cityWeather={cityWeather}
+					unpinBtn={false}
+				/>
+			)}
 
 			<ul className='grid grid-cols-4 gap-4'>
 				{citiesWeather.map(element => (
