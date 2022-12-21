@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
 import React from 'react';
-import { url } from '../api/api';
-import WeatherPanel from './weatherPanel/weatherPanel';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { uid } from 'uid';
+
+import { url } from '../api/api';
+import WeatherPanel from './weatherPanel/weatherPanel';
 
 export default function Application() {
 	const [cityWeather, setCityWeather] = useState(null);
@@ -45,6 +46,7 @@ export default function Application() {
 	const addCity = () => {
 		setCitiesWeather(citiesWeather, citiesWeather.push(cityWeather));
 		clearForm();
+		console.log(citiesWeather);
 	};
 
 	const unpin = () => {
@@ -59,7 +61,7 @@ export default function Application() {
 	}, [submitValue]);
 
 	return (
-		<div className='container mx-auto p-4'>
+		<div className='container mx-auto p-4 list-none'>
 			<form onSubmit={handleSubmit}>
 				<button
 					type='submit'
@@ -91,7 +93,7 @@ export default function Application() {
 				/>
 			)}
 
-			<ul className='grid grid-cols-4 gap-4'>
+			<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
 				{citiesWeather.map(element => (
 					<WeatherPanel
 						key={uid()}

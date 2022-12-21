@@ -8,6 +8,9 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 				Country: {cityWeather?.location.country}
 			</p>
 			<p className='text-indigo-400 font-medium'>
+				Region: {cityWeather?.location.region}
+			</p>
+			<p className='text-indigo-400 font-medium'>
 				City: {cityWeather?.location.name}
 			</p>
 			<p>
@@ -21,6 +24,7 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 					cityWeather ? `http://${cityWeather?.current.condition.icon.slice(2)}` : ''
 				}
 			/>
+			<p>Local time: {cityWeather?.location.localtime}</p>
 
 			{unpinBtn !== false && (
 				<button
