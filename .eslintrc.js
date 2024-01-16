@@ -3,7 +3,7 @@ module.exports = {
 		browser: true,
 		es2021: true,
 	},
-	extends: ['plugin:react/recommended', 'xo'],
+	extends: ['plugin:react/recommended'],
 	overrides: [],
 	parserOptions: {
 		ecmaVersion: 'latest',

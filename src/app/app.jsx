@@ -44,36 +44,31 @@ export default function Application() {
 	};
 
 	const addCity = () => {
-		setCitiesWeather(citiesWeather, citiesWeather.push(cityWeather));
+		setCitiesWeather([
+			...citiesWeather,
+			{ id: uid(), cityInfo: cityWeather.cityInfo },
+		]);
 		clearForm();
-		console.log(citiesWeather);
 	};
 
-	const unpin = () => {
-		const cityToBeRemoved = citiesWeather.filter(
-			city => city.id !== cityWeather.id,
-		);
-
-		const index = citiesWeather.findIndex(city => city.id === cityToBeRemoved.id);
-
-		const updatedCitiesWeather = [
-			...citiesWeather.slice(0, index),
-			...citiesWeather.slice(index + 1),
-		];
-
+	const unpin = id => {
+		const updatedCitiesWeather = citiesWeather.filter(city => city.id !== id);
 		setCitiesWeather(updatedCitiesWeather);
 	};
 
 	useEffect(() => {
 		current().then(data => {
-			setCityWeather(data);
+			setCityWeather({ id: uid(), cityInfo: data });
 		});
 	}, [submitValue]);
+
+	console.log('cityWeather', cityWeather);
+	console.log('citiesWeather', citiesWeather);
 
 	return (
 		<div
 			className={
-				cityWeather?.current.cloud > 50 ? 'bg-neutral-300' : 'bg-blue-300'
+				cityWeather?.cityInfo.current.cloud > 50 ? 'bg-neutral-300' : 'bg-blue-300'
 			}>
 			<div className='container mx-auto p-4 list-none'>
 				<form onSubmit={handleSubmit}>
@@ -102,7 +97,7 @@ export default function Application() {
 
 				{submitValue && (
 					<WeatherPanel
-						cityWeather={cityWeather}
+						cityWeather={cityWeather?.cityInfo}
 						unpinBtn={false}
 					/>
 				)}
@@ -110,10 +105,10 @@ export default function Application() {
 				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
 					{citiesWeather.map(element => (
 						<WeatherPanel
-							key={uid()}
+							key={element.id}
 							className='basis-1/4'
-							cityWeather={element}
-							unpin={unpin}
+							cityWeather={element.cityInfo}
+							unpin={() => unpin(element.id)}
 						/>
 					))}
 				</ul>
