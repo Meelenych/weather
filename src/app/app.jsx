@@ -50,8 +50,18 @@ export default function Application() {
 	};
 
 	const unpin = () => {
-		const index = citiesWeather.indexOf(0);
-		setCitiesWeather(citiesWeather, citiesWeather.splice(index, 1));
+		const cityToBeRemoved = citiesWeather.filter(
+			city => city.id !== cityWeather.id,
+		);
+
+		const index = citiesWeather.findIndex(city => city.id === cityToBeRemoved.id);
+
+		const updatedCitiesWeather = [
+			...citiesWeather.slice(0, index),
+			...citiesWeather.slice(index + 1),
+		];
+
+		setCitiesWeather(updatedCitiesWeather);
 	};
 
 	useEffect(() => {
