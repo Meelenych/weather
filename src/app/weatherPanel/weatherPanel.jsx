@@ -3,26 +3,26 @@ import PropTypes from 'prop-types';
 
 export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 	return (
-		<li className='w-1/4 mt-4 w-full'>
+		<li className='w-1/4 w-full'>
 			<div
 				className={
 					cityWeather?.current.is_day === 0
-						? 'bg-blue-900 p-3 rounded-md shadow-xl'
-						: 'bg-blue-400 p-3 rounded-md shadow-xl'
+						? 'bg-blue-900 p-3 shadow-xl'
+						: 'bg-blue-400 p-3 shadow-xl'
 				}>
-				<p className='text-xl font-medium text-indigo-700 '>
+				<p className='text-xl font-medium text-amber-500 '>
 					Country: {cityWeather?.location.country}
 				</p>
-				<p className='text-indigo-700 font-medium'>
+				<p className='text-amber-500 font-medium'>
 					Region: {cityWeather?.location.region}
 				</p>
-				<p className='text-indigo-700 font-medium'>
+				<p className='text-amber-500 font-medium'>
 					City: {cityWeather?.location.name}
 				</p>
-				<p>
+				<p className='text-amber-100'>
 					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C
 				</p>
-				<p>
+				<p className='text-amber-100'>
 					Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C
 				</p>
 				<img
@@ -32,13 +32,15 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 							: ''
 					}
 				/>
-				<p>Local time: {cityWeather?.location.localtime.slice(10)}</p>
+				<p className='text-amber-100'>
+					Local time: {cityWeather?.location.localtime.slice(10)}
+				</p>
 
 				{unpinBtn !== false && (
 					<button
 						type='button'
 						onClick={unpin}
-						className='border-solid border-2 border-indigo-600 p-1 rounded-md text-lg font-semiboldfont-semibold bg-indigo-600 text-white'>
+						className='border-solid border-2 border-amber-400 p-1 rounded-md text-lg font-semibold bg-amber-400 text-blue-900'>
 						Unpin
 					</button>
 				)}
