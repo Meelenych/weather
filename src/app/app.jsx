@@ -51,10 +51,14 @@ export default function Application() {
 		if (isCityAlreadyAdded) {
 			clearForm();
 		} else {
-			setCitiesWeather([
+			const updatedCitiesWeather = [
 				...citiesWeather,
 				{ id: uid(), cityInfo: cityWeather.cityInfo },
-			]);
+			];
+
+			setCitiesWeather(updatedCitiesWeather);
+
+			localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 			clearForm();
 		}
 	};
@@ -62,16 +66,31 @@ export default function Application() {
 	const unpin = id => {
 		const updatedCitiesWeather = citiesWeather.filter(city => city.id !== id);
 		setCitiesWeather(updatedCitiesWeather);
+		localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 	};
+
+	useEffect(() => {
+		const myCities = JSON.parse(localStorage.getItem('myCities')) || [];
+		setCitiesWeather(myCities);
+	}, []);
+
+	useEffect(() => {
+		const handleBeforeUnload = () => {
+			localStorage.setItem('myCities', JSON.stringify(citiesWeather));
+		};
+
+		window.addEventListener('beforeunload', handleBeforeUnload);
+
+		return () => {
+			window.removeEventListener('beforeunload', handleBeforeUnload);
+		};
+	}, [citiesWeather]);
 
 	useEffect(() => {
 		current().then(data => {
 			setCityWeather({ id: uid(), cityInfo: data });
 		});
 	}, [submitValue]);
-
-	console.log('cityWeather', cityWeather);
-	console.log('citiesWeather', citiesWeather);
 
 	return (
 		<div
