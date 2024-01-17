@@ -44,11 +44,19 @@ export default function Application() {
 	};
 
 	const addCity = () => {
-		setCitiesWeather([
-			...citiesWeather,
-			{ id: uid(), cityInfo: cityWeather.cityInfo },
-		]);
-		clearForm();
+		const isCityAlreadyAdded = citiesWeather.some(
+			city => city.cityInfo.location.name === cityWeather.cityInfo.location.name,
+		);
+
+		if (isCityAlreadyAdded) {
+			clearForm();
+		} else {
+			setCitiesWeather([
+				...citiesWeather,
+				{ id: uid(), cityInfo: cityWeather.cityInfo },
+			]);
+			clearForm();
+		}
 	};
 
 	const unpin = id => {
