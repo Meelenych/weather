@@ -103,16 +103,16 @@ export default function Application() {
 				<div
 					className={
 						cityWeather?.cityInfo.current.cloud > 50
-							? 'bg-neutral-300 sticky top-4 overflow-y-auto'
+							? 'bg-neutral-300 sticky top-0 overflow-y-auto'
 							: 'bg-blue-300 sticky top-4 overflow-y-auto'
 					}>
 					<div className='bg-gradient-to-t from-blue-900 ... mt-4 font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full'>
 						<form
-							className='flex justify-center'
+							className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
 							onSubmit={handleSubmit}>
 							<button
 								type='submit'
-								className='mr-4 border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-blue-600 text-white'>
+								className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-blue-600 text-white'>
 								<span>Search</span>
 							</button>
 
@@ -128,21 +128,21 @@ export default function Application() {
 							<button
 								onClick={addCity}
 								type='button'
-								className='ml-4 border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 text-white'>
+								className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 text-white'>
 								<span>Add city</span>
 							</button>
 						</form>
 
-						<p className='text-left'>Search results</p>
+						<p className='text-left pt-2'>Search results</p>
 					</div>
-
-					{submitValue && (
-						<WeatherPanel
-							cityWeather={cityWeather?.cityInfo}
-							unpinBtn={false}
-						/>
-					)}
 				</div>
+				{submitValue && (
+					<WeatherPanel
+						cityWeather={cityWeather?.cityInfo}
+						unpinBtn={false}
+					/>
+				)}
+
 				<div className='mt-8'>
 					<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
 						{citiesWeather.map(element => (
