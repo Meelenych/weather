@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Clock from '../../clock/clock';
+
 export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 	return (
 		<li className='w-1/4 w-full'>
@@ -32,8 +34,8 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 							: ''
 					}
 				/>
-				<p className='text-amber-100'>
-					Local time: {cityWeather?.location.localtime.slice(10)}
+				<p className='flex text-amber-100'>
+					Local time: <Clock timezone={cityWeather?.location.tz_id} />
 				</p>
 
 				{unpinBtn !== false && (
@@ -54,4 +56,5 @@ WeatherPanel.propTypes = {
 	cityWeather: PropTypes.object,
 	unpin: PropTypes.func,
 	unpinBtn: PropTypes.bool,
+	timezone: PropTypes.string,
 };
