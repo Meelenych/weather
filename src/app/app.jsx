@@ -141,12 +141,7 @@ export default function Application() {
 			<div className={getStickyPanelClasses()}>
 				<form
 					className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
-					onSubmit={handleSubmit}>
-					<button
-						type='submit'
-						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-blue-600 text-white'>
-						<span>Search</span>
-					</button>
+					onSubmit={handleSubmit}>					
 					<input
 						type='text'
 						autoComplete='off'
@@ -155,6 +150,11 @@ export default function Application() {
 						value={changeValue}
 						className='border-solid border-2 border-blue-600 p-2 rounded-md text-blue-800 text-xl'
 					/>
+					<button
+						type='submit'
+						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-blue-600 text-white'>
+						<span>Search</span>
+					</button>
 					<button
 						onClick={addCity}
 						type='button'
