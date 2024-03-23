@@ -12,14 +12,14 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 						? 'bg-blue-900 p-3 shadow-xl'
 						: 'bg-blue-400 p-3 shadow-xl'
 				}>
-				<p className='text-xl font-medium text-amber-500 '>
-					Country: {cityWeather?.location.country}
+				<p className='text-amber-500 font-medium text-xl'>
+					City: {cityWeather?.location.name}
 				</p>
 				<p className='text-amber-500 font-medium'>
 					Region: {cityWeather?.location.region}
 				</p>
-				<p className='text-amber-500 font-medium'>
-					City: {cityWeather?.location.name}
+				<p className=' font-medium text-amber-500 '>
+					Country: {cityWeather?.location.country}
 				</p>
 				<p className='text-amber-100'>
 					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C
