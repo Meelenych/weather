@@ -148,17 +148,17 @@ export default function Application() {
 						placeholder='Search a city'
 						onChange={handleChange}
 						value={changeValue}
-						className='border-solid border-2 border-blue-600 p-2 rounded-md text-blue-800 text-xl'
+						className='border-solid border-2 border-blue-600 p-2 rounded-md text-blue-800 text-xl  focus:border-orange-500 outline-none'
 					/>
 					<button
 						type='submit'
-						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-blue-600 text-white'>
+						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 						<span>Search</span>
 					</button>
 					<button
 						onClick={addCity}
 						type='button'
-						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 text-white'>
+						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 						<span>Add city</span>
 					</button>
 				</form>
