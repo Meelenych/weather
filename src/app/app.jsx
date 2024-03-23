@@ -128,17 +128,14 @@ export default function Application() {
 		});
 	}, [submitValue]);
 
-	const getContainerClasses = () =>
-		`container mx-auto list-none relative pr-4 pl-4`;
-
-	const getStickyPanelClasses = () =>
-		`bg-gradient-to-t from-blue-900 to-white font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
-			cityWeather?.cityInfo?.current.cloud > 50 ? 'bg-neutral-300' : 'bg-blue-300'
-		} sticky top-0 overflow-y-auto`;
-
 	return (
-		<div className={getContainerClasses()}>
-			<div className={getStickyPanelClasses()}>
+		<div className='container mx-auto list-none relative pr-4 pl-4'>
+			<div
+				className={`bg-gradient-to-t from-blue-900 to-white font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
+					cityWeather?.cityInfo?.current.cloud > 50
+						? 'bg-neutral-300'
+						: 'bg-blue-300'
+				} sticky top-0 overflow-y-auto`}>
 				<form
 					className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
 					onSubmit={handleSubmit}>
@@ -167,10 +164,12 @@ export default function Application() {
 				</p>
 			</div>
 			{submitValue && (
-				<WeatherPanel
-					cityWeather={cityWeather?.cityInfo}
-					unpinBtn={false}
-				/>
+				<>
+					<WeatherPanel
+						cityWeather={cityWeather?.cityInfo}
+						unpinBtn={false}
+					/>
+				</>
 			)}
 			<div className='mt-8'>
 				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
