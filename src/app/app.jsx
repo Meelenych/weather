@@ -79,8 +79,9 @@ export default function Application() {
 
 	useEffect(() => {
 		fetchIpGeolocationFree(ip).then(data => {
-			toast.info(`Your city is ${data.city}`);
-			setSubmitValue(data.city);
+			const cityName = data.city;
+			toast.info(`Your city is ${cityName}`);
+			setSubmitValue(cityName);
 		});
 	}, []);
 
