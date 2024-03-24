@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Clock from '../../clock/clock';
 
 export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {

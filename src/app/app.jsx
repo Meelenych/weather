@@ -3,39 +3,38 @@ import axios from 'axios';
 import { uid } from 'uid';
 import { url } from '../api/api';
 import WeatherPanel from './weatherPanel/weatherPanel';
+import { getLocation } from '../helpers/geolocation';
+import { fetchIpGeolocation } from '../api/ipinfo';
 
 export default function Application() {
-	const [location, setLocation] = useState('');
+	const [loading, setLoading] = useState(false);
 	const [cityWeather, setCityWeather] = useState(null);
 	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
 	const [citiesWeather, setCitiesWeather] = useState([]);
-	const [loading, setLoading] = useState(false);
 	const [latitude, setLatitude] = useState(0);
 	const [longitude, setLongitude] = useState(0);
+	const [ipGeolocation, setIpGeolocation] = useState(null);
 
-	const getLocation = () => {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(success, error);
-		} else {
-			console.error('Geolocation is not supported by this browser.');
-		}
-
-		function success(position) {
-			const latitude = position.coords.latitude;
-			const longitude = position.coords.longitude;
-			setLatitude(latitude);
-			setLongitude(longitude);
-			console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-		}
-
-		function error(err) {
-			console.error(`Geolocation error (${err.code}): ${err.message}`);
-		}
-	};
+	// useEffect(() => {
+	// 	getLocation(locationData => {
+	// 		console.log('locationData', locationData);
+	// 		setLatitude(latitude);
+	// 		setLongitude(longitude);
+	// 	});
+	// }, []);
 
 	useEffect(() => {
-		getLocation();
+		fetchIpGeolocation().then(
+			data => {
+				console.log('data', data);
+				setIpGeolocation(data);
+				setSubmitValue(data.city);
+			},
+			error => {
+				console.log('error', error);
+			},
+		);
 	}, []);
 
 	useEffect(() => {
@@ -55,17 +54,17 @@ export default function Application() {
 		};
 	}, [citiesWeather]);
 
-	const fetchLocation = async () => {
-		try {
-			setLoading(true);
-			const res = await axios.get(url + `lat=${latitude}&lon=${longitude}`);
-			return res.data;
-		} catch (error) {
-			console.error(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+	// const fetchLocation = async () => {
+	// 	try {
+	// 		setLoading(true);
+	// 		const res = await axios.get(url + `lat=${latitude}&lon=${longitude}`);
+	// 		return res.data;
+	// 	} catch (error) {
+	// 		console.error(error.message);
+	// 	} finally {
+	// 		setLoading(false);
+	// 	}
+	// };
 
 	const fetchData = async location => {
 		try {
@@ -81,19 +80,18 @@ export default function Application() {
 		}
 	};
 
-	useEffect(() => {
-		const loadData = async () => {
-			try {
-				const data = await fetchLocation();
-				const locationName = data.location.name;
-				setLocation(locationName);
-				setSubmitValue(locationName);
-			} catch (error) {
-				console.error(error.message);
-			}
-		};
-		loadData();
-	}, []);
+	// useEffect(() => {
+	// 	const loadData = async () => {
+	// 		try {
+	// 			const data = await fetchLocation();
+	// 			const locationName = data.location.name;
+	// 			setSubmitValue(locationName);
+	// 		} catch (error) {
+	// 			console.error(error.message);
+	// 		}
+	// 	};
+	// 	loadData();
+	// }, []);
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -184,12 +182,12 @@ export default function Application() {
 	}, [submitValue]);
 
 	return (
-		<div className='container mx-auto list-none relative pr-4 pl-4'>
+		<div className={`container mx-auto list-none relative`}>
 			<div
-				className={`bg-gradient-to-t from-blue-900 to-white font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
-					cityWeather?.cityInfo?.current.cloud > 50
-						? 'bg-neutral-300'
-						: 'bg-blue-300'
+				className={`font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
+					cityWeather?.cityInfo?.current.is_day === 0
+						? 'bg-gradient-to-t from-blue-900 to-white p-3 '
+						: 'bg-gradient-to-t from-blue-400 to-white p-3 '
 				} sticky top-0 overflow-y-auto`}>
 				<form
 					className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
@@ -219,14 +217,12 @@ export default function Application() {
 				</p>
 			</div>
 			{submitValue && (
-				<>
-					<WeatherPanel
-						cityWeather={cityWeather?.cityInfo}
-						unpinBtn={false}
-					/>
-				</>
+				<WeatherPanel
+					cityWeather={cityWeather?.cityInfo}
+					unpinBtn={false}
+				/>
 			)}
-			<div className='mt-8'>
+			<div className='mt-4'>
 				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
 					{citiesWeather.map(element => (
 						<WeatherPanel
