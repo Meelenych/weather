@@ -200,14 +200,14 @@ export default function Application() {
 	}, [submitValue]);
 
 	return (
-		<div className={`container mx-auto list-none relative`}>
+		<div className={`container mx-auto list-none`}>
 			{/* <ToastContainer /> */}
 			<div
 				className={`font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
 					cityWeather?.cityInfo?.current.is_day === 0
-						? 'bg-gradient-to-t from-blue-900 to-white p-3 '
-						: 'bg-gradient-to-t from-blue-400 to-white p-3 '
-				} sticky top-0 overflow-y-auto`}>
+						? 'bg-gradient-to-t from-blue-900 to-white p-3'
+						: 'bg-gradient-to-t from-blue-400 to-white p-3'
+				} sticky top-0 overflow-y-auto z-50`}>
 				<form
 					className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
 					onSubmit={handleSubmit}>
@@ -236,12 +236,14 @@ export default function Application() {
 				</p>
 			</div>
 			{submitValue && (
-				<WeatherPanel
-					cityWeather={cityWeather?.cityInfo}
-					unpinBtn={false}
-				/>
+				<div className='z-0'>
+					<WeatherPanel
+						cityWeather={cityWeather?.cityInfo}
+						unpinBtn={false}
+					/>
+				</div>
 			)}
-			<div className='mt-4'>
+			<div className='mt-4 z-0'>
 				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
 					{citiesWeather.map(element => (
 						<WeatherPanel
