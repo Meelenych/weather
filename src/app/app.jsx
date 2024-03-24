@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { uid } from 'uid';
+import { ToastContainer, toast } from 'react-toastify';
 import { url } from '../api/api';
 import WeatherPanel from './weatherPanel/weatherPanel';
 import { getLocation } from '../helpers/geolocation';
@@ -166,7 +167,7 @@ export default function Application() {
 
 			if (isCityAlreadyAdded) {
 				clearForm();
-				window.alert('City already added');
+				toast.error(`${cityWeather?.cityInfo?.location.name} already added`);
 			} else {
 				const updatedCitiesWeather = [
 					...citiesWeather,
@@ -176,7 +177,7 @@ export default function Application() {
 				setCitiesWeather(updatedCitiesWeather);
 				localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 				clearForm();
-				window.alert('City successfully added');
+				toast.success(`${cityWeather?.cityInfo?.location.name} added to your list`);
 			}
 		} catch (error) {
 			console.error(error.message);
@@ -197,6 +198,7 @@ export default function Application() {
 
 	return (
 		<div className={`container mx-auto list-none relative`}>
+			{/* <ToastContainer /> */}
 			<div
 				className={`font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
 					cityWeather?.cityInfo?.current.is_day === 0
