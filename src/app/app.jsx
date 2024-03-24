@@ -1,46 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import WeatherPanel from './weatherPanel/weatherPanel';
 import axios from 'axios';
 import { uid } from 'uid';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { url } from '../api/api';
-import WeatherPanel from './weatherPanel/weatherPanel';
-import { getLocation } from '../helpers/geolocation';
-import { fetchIpGeolocation } from '../api/ipinfo';
-import { getMyIP } from '../helpers/getIp';
-import { fetchIpGeolocationFree } from '../api/ipinfofree';
 import { fetchGeopify } from '../api/geopify';
 
 export default function Application() {
 	const [loading, setLoading] = useState(false);
 	const [cityWeather, setCityWeather] = useState(null);
+	const [citiesWeather, setCitiesWeather] = useState([]);
 	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
-	const [citiesWeather, setCitiesWeather] = useState([]);
-	const [ip, setIp] = useState('');
-	const [latitude, setLatitude] = useState(0);
-	const [longitude, setLongitude] = useState(0);
-	const [ipGeolocation, setIpGeolocation] = useState(null);
-
-	// useEffect(() => {
-	// 	getLocation(locationData => {
-	// 		console.log('locationData', locationData);
-	// 		setLatitude(latitude);
-	// 		setLongitude(longitude);
-	// 	});
-	// }, []);
-
-	useEffect(() => {
-		// fetchIpGeolocation().then(
-		// 	data => {
-		// 		console.log('data', data);
-		// 		setIpGeolocation(data);
-		// 		setSubmitValue(data.city);
-		// 	},
-		// 	error => {
-		// 		console.log('error', error);
-		// 	},
-		// );
-	}, []);
 
 	useEffect(() => {
 		const myCities = JSON.parse(localStorage.getItem('myCities')) || [];
@@ -58,33 +29,6 @@ export default function Application() {
 			window.removeEventListener('beforeunload', handleBeforeUnload);
 		};
 	}, [citiesWeather]);
-
-	// const fetchLocation = async () => {
-	// 	try {
-	// 		setLoading(true);
-	// 		const res = await axios.get(url + `lat=${latitude}&lon=${longitude}`);
-	// 		return res.data;
-	// 	} catch (error) {
-	// 		console.error(error.message);
-	// 	} finally {
-	// 		setLoading(false);
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	getMyIP().then(ip => {
-	// 		toast.info(`Your IP is ${ip}`);
-	// 		setIp(ip);
-	// 	});
-	// }, []);
-
-	// useEffect(() => {
-	// 	fetchIpGeolocationFree(ip).then(data => {
-	// 		const cityName = data.city;
-	// 		toast.info(`Your city is ${cityName}`);
-	// 		setSubmitValue(cityName);
-	// 	});
-	// }, []);
 
 	useEffect(() => {
 		fetchGeopify().then(data => {
@@ -108,19 +52,6 @@ export default function Application() {
 		}
 	};
 
-	// useEffect(() => {
-	// 	const loadData = async () => {
-	// 		try {
-	// 			const data = await fetchLocation();
-	// 			const locationName = data.location.name;
-	// 			setSubmitValue(locationName);
-	// 		} catch (error) {
-	// 			console.error(error.message);
-	// 		}
-	// 	};
-	// 	loadData();
-	// }, []);
-
 	useEffect(() => {
 		const loadData = async () => {
 			try {
@@ -135,12 +66,12 @@ export default function Application() {
 		loadData();
 	}, [submitValue]);
 
-	const onFormSubmit = data => {
-		setSubmitValue(data);
-	};
-
 	const handleChange = e => {
 		setChangeValue(e.currentTarget.value);
+	};
+
+	const onFormSubmit = data => {
+		setSubmitValue(data);
 	};
 
 	const clearForm = () => {
@@ -203,15 +134,8 @@ export default function Application() {
 		localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 	};
 
-	useEffect(() => {
-		fetchData(submitValue).then(data => {
-			setCityWeather({ id: uid(), cityInfo: data });
-		});
-	}, [submitValue]);
-
 	return (
 		<div className={`container mx-auto list-none`}>
-			{/* <ToastContainer /> */}
 			<div
 				className={`font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
 					cityWeather?.cityInfo?.current.is_day === 0
