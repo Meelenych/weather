@@ -21,10 +21,12 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 					Country: {cityWeather?.location.country}
 				</p>
 				<p className='text-amber-100'>
-					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C
+					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C or{' '}
+					{cityWeather?.current.temp_f} F
 				</p>
 				<p className='text-amber-100'>
-					Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C
+					Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C or{' '}
+					{cityWeather?.current.temp_f} F
 				</p>
 				<img
 					src={
