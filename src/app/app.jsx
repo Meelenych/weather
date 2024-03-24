@@ -1,16 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { uid } from 'uid';
-
 import { url } from '../api/api';
 import WeatherPanel from './weatherPanel/weatherPanel';
 
 export default function Application() {
+	const [location, setLocation] = useState('');
 	const [cityWeather, setCityWeather] = useState(null);
-	const [submitValue, setSubmitValue] = useState('Vienna');
+	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
 	const [citiesWeather, setCitiesWeather] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [latitude, setLatitude] = useState(0);
+	const [longitude, setLongitude] = useState(0);
+
+	const getLocation = () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(success, error);
+		} else {
+			console.error('Geolocation is not supported by this browser.');
+		}
+
+		function success(position) {
+			const latitude = position.coords.latitude;
+			const longitude = position.coords.longitude;
+			setLatitude(latitude);
+			setLongitude(longitude);
+			console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+		}
+
+		function error(err) {
+			console.error(`Geolocation error (${err.code}): ${err.message}`);
+		}
+	};
+
+	useEffect(() => {
+		getLocation();
+	}, []);
 
 	useEffect(() => {
 		const myCities = JSON.parse(localStorage.getItem('myCities')) || [];
@@ -29,11 +55,25 @@ export default function Application() {
 		};
 	}, [citiesWeather]);
 
-	const fetchData = async cityName => {
+	const fetchLocation = async () => {
 		try {
 			setLoading(true);
-			const res = await axios.get(url + cityName);
+			const res = await axios.get(url + `lat=${latitude}&lon=${longitude}`);
 			return res.data;
+		} catch (error) {
+			console.error(error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const fetchData = async location => {
+		try {
+			setLoading(true);
+			if (location) {
+				const res = await axios.get(url + location);
+				return res.data;
+			}
 		} catch (error) {
 			console.error(error.message);
 		} finally {
@@ -44,13 +84,28 @@ export default function Application() {
 	useEffect(() => {
 		const loadData = async () => {
 			try {
-				const data = await fetchData(submitValue);
-				setCityWeather({ id: uid(), cityInfo: data });
+				const data = await fetchLocation();
+				const locationName = data.location.name;
+				setLocation(locationName);
+				setSubmitValue(locationName);
 			} catch (error) {
 				console.error(error.message);
 			}
 		};
+		loadData();
+	}, []);
 
+	useEffect(() => {
+		const loadData = async () => {
+			try {
+				if (submitValue) {
+					const data = await fetchData(submitValue);
+					setCityWeather({ id: uid(), cityInfo: data });
+				}
+			} catch (error) {
+				console.error(error.message);
+			}
+		};
 		loadData();
 	}, [submitValue]);
 
@@ -156,7 +211,7 @@ export default function Application() {
 						onClick={addCity}
 						type='button'
 						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
-						<span>Add city</span>
+						<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
 					</button>
 				</form>
 				<p className='text-left pt-2'>
