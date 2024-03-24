@@ -5,6 +5,8 @@ import { url } from '../api/api';
 import WeatherPanel from './weatherPanel/weatherPanel';
 import { getLocation } from '../helpers/geolocation';
 import { fetchIpGeolocation } from '../api/ipinfo';
+import { getMyIP } from '../helpers/getIp';
+import { fetchIpGeolocationFree } from '../api/ipinfofree';
 
 export default function Application() {
 	const [loading, setLoading] = useState(false);
@@ -12,6 +14,7 @@ export default function Application() {
 	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
 	const [citiesWeather, setCitiesWeather] = useState([]);
+	const [ip, setIp] = useState('');
 	const [latitude, setLatitude] = useState(0);
 	const [longitude, setLongitude] = useState(0);
 	const [ipGeolocation, setIpGeolocation] = useState(null);
@@ -25,16 +28,16 @@ export default function Application() {
 	// }, []);
 
 	useEffect(() => {
-		fetchIpGeolocation().then(
-			data => {
-				console.log('data', data);
-				setIpGeolocation(data);
-				setSubmitValue(data.city);
-			},
-			error => {
-				console.log('error', error);
-			},
-		);
+		// fetchIpGeolocation().then(
+		// 	data => {
+		// 		console.log('data', data);
+		// 		setIpGeolocation(data);
+		// 		setSubmitValue(data.city);
+		// 	},
+		// 	error => {
+		// 		console.log('error', error);
+		// 	},
+		// );
 	}, []);
 
 	useEffect(() => {
@@ -65,6 +68,17 @@ export default function Application() {
 	// 		setLoading(false);
 	// 	}
 	// };
+
+	useEffect(() => {
+		getMyIP().then(ip => {
+			console.log('ip', ip);
+			setIp(ip);
+		});
+	}, []);
+
+	useEffect(() => {
+		fetchIpGeolocationFree(ip).then(data => setSubmitValue(data.city));
+	}, []);
 
 	const fetchData = async location => {
 		try {
