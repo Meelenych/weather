@@ -8,6 +8,7 @@ import { getLocation } from '../helpers/geolocation';
 import { fetchIpGeolocation } from '../api/ipinfo';
 import { getMyIP } from '../helpers/getIp';
 import { fetchIpGeolocationFree } from '../api/ipinfofree';
+import { fetchGeopify } from '../api/geopify';
 
 export default function Application() {
 	const [loading, setLoading] = useState(false);
@@ -70,18 +71,26 @@ export default function Application() {
 	// 	}
 	// };
 
-	useEffect(() => {
-		getMyIP().then(ip => {
-			toast.info(`Your IP is ${ip}`);
-			setIp(ip);
-		});
-	}, []);
+	// useEffect(() => {
+	// 	getMyIP().then(ip => {
+	// 		toast.info(`Your IP is ${ip}`);
+	// 		setIp(ip);
+	// 	});
+	// }, []);
+
+	// useEffect(() => {
+	// 	fetchIpGeolocationFree(ip).then(data => {
+	// 		const cityName = data.city;
+	// 		toast.info(`Your city is ${cityName}`);
+	// 		setSubmitValue(cityName);
+	// 	});
+	// }, []);
 
 	useEffect(() => {
-		fetchIpGeolocationFree(ip).then(data => {
-			const cityName = data.city;
-			toast.info(`Your city is ${cityName}`);
-			setSubmitValue(cityName);
+		fetchGeopify().then(data => {
+			console.log('geopify', data);
+			toast.info(`Your city is ${data.city.name}`);
+			setSubmitValue(data.city.name);
 		});
 	}, []);
 
