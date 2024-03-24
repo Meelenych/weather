@@ -72,13 +72,16 @@ export default function Application() {
 
 	useEffect(() => {
 		getMyIP().then(ip => {
-			console.log('ip', ip);
+			toast.info(`Your IP is ${ip}`);
 			setIp(ip);
 		});
 	}, []);
 
 	useEffect(() => {
-		fetchIpGeolocationFree(ip).then(data => setSubmitValue(data.city));
+		fetchIpGeolocationFree(ip).then(data => {
+			toast.info(`Your city is ${data.city}`);
+			setSubmitValue(data.city);
+		});
 	}, []);
 
 	const fetchData = async location => {
