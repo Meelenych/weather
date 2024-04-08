@@ -13,11 +13,20 @@ export default function Application() {
 	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
 
+	//Loading cities from local storage
 	useEffect(() => {
 		const myCities = JSON.parse(localStorage.getItem('myCities')) || [];
-		setCitiesWeather(myCities);
+		if (Array.isArray(myCities)) {
+			console.log('myCities', myCities);
+			setCitiesWeather(myCities);
+		} else {
+			console.error(
+				'Data retrieved from local storage is not an array:',
+				myCities,
+			);
+		}
 	}, []);
-
+	//Saving cities to local storage before closing tab
 	useEffect(() => {
 		const handleBeforeUnload = async () => {
 			await localStorage.setItem('myCities', JSON.stringify(citiesWeather));
@@ -29,7 +38,7 @@ export default function Application() {
 			window.removeEventListener('beforeunload', handleBeforeUnload);
 		};
 	}, [citiesWeather]);
-
+	//Get user city name using IP address
 	useEffect(() => {
 		fetchGeopify().then(data => {
 			console.log('geopify', data);
@@ -42,27 +51,40 @@ export default function Application() {
 		try {
 			setLoading(true);
 			if (location) {
+				console.log('update location', location);
 				const res = await axios.get(url + location);
+				toast.success(`Weather for ${location} updated`);
 				return res.data;
 			}
 		} catch (error) {
 			console.error(error.message);
+			toast.error(`Weather for ${location} could not be updated`);
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	useEffect(() => {
-		const loadData = async () => {
-			try {
-				if (submitValue) {
-					const data = await fetchData(submitValue);
-					setCityWeather({ id: uid(), cityInfo: data });
-				}
-			} catch (error) {
-				console.error(error.message);
+	const loadData = async locationName => {
+		try {
+			if (locationName || submitValue) {
+				const data = await fetchData(locationName ? locationName : submitValue);
+				setCityWeather({ id: uid(), cityInfo: data });
+				const updatedCitiesWeather = citiesWeather.map(city => {
+					if (city.cityInfo.location.name === locationName) {
+						return { id: city.id, cityInfo: data };
+					} else {
+						return city;
+					}
+				});
+				setCitiesWeather(updatedCitiesWeather);
+				localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 			}
-		};
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+	//Save fetched data to state
+	useEffect(() => {
 		loadData();
 	}, [submitValue]);
 
@@ -84,31 +106,26 @@ export default function Application() {
 			clearForm();
 			return;
 		}
-
 		onFormSubmit(changeValue.toLowerCase().trim());
 	};
 
+	//Adds city to watchlist
 	const addCity = async () => {
 		const trimmedValue = changeValue.toLowerCase().trim();
-
 		if (trimmedValue === '') {
 			clearForm();
 			return;
 		}
-
 		try {
 			const data = await fetchData(trimmedValue);
-
 			if (!data) {
 				console.error('Data from API is undefined or empty.');
 				clearForm();
 				return;
 			}
-
 			const isCityAlreadyAdded = citiesWeather.some(
 				city => city.cityInfo.location.name === data.location.name,
 			);
-
 			if (isCityAlreadyAdded) {
 				clearForm();
 				toast.error(`${cityWeather?.cityInfo?.location.name} already added`);
@@ -117,7 +134,6 @@ export default function Application() {
 					...citiesWeather,
 					{ id: uid(), cityInfo: data },
 				];
-
 				setCitiesWeather(updatedCitiesWeather);
 				localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 				clearForm();
@@ -127,7 +143,7 @@ export default function Application() {
 			console.error(error.message);
 		}
 	};
-
+	//Removes city from watchlist
 	const unpin = id => {
 		const updatedCitiesWeather = citiesWeather.filter(city => city.id !== id);
 		setCitiesWeather(updatedCitiesWeather);
@@ -155,7 +171,7 @@ export default function Application() {
 					/>
 					<button
 						type='submit'
-						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+						className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 						<span>Search</span>
 					</button>
 					<button
@@ -185,6 +201,8 @@ export default function Application() {
 							className='basis-1/4'
 							cityWeather={element.cityInfo}
 							unpin={() => unpin(element.id)}
+							lastUpdate={new Date().toLocaleString()}
+							update={() => loadData(element.cityInfo.location.name)}
 						/>
 					))}
 				</ul>

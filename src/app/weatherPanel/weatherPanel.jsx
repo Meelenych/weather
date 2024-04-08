@@ -2,10 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Clock from '../../clock/clock';
 import closeIcon from '../../images/close.svg';
+import formatTime from '../../clock/formatTime';
 
-export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
+export default function WeatherPanel({
+	cityWeather,
+	unpin,
+	unpinBtn,
+	lastUpdate,
+	update,
+}) {
 	return (
-		<li className='w-1/4 w-full'>
+		<li className='w-full'>
 			<div
 				className={`relative ${
 					cityWeather?.current.is_day === 0
@@ -36,9 +43,23 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 							: ''
 					}
 				/>
+				<p className='text-amber-100'>{cityWeather?.current.condition.text}</p>
 				<p className='flex text-amber-100'>
 					Local time: <Clock timezone={cityWeather?.location.tz_id} />
 				</p>
+				{unpinBtn !== false && (
+					<>
+						<p>Last update: {lastUpdate}</p>
+						<p>Updated to local time: {formatTime(cityWeather?.location.tz_id)}</p>
+					</>
+				)}
+				{unpinBtn !== false && (
+					<button
+						className='text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1'
+						onClick={() => update()}>
+						Update
+					</button>
+				)}
 
 				{unpinBtn !== false && (
 					<button
@@ -58,9 +79,10 @@ export default function WeatherPanel({ cityWeather, unpin, unpinBtn }) {
 }
 
 WeatherPanel.propTypes = {
-	children: PropTypes.any,
 	cityWeather: PropTypes.object,
 	unpin: PropTypes.func,
 	unpinBtn: PropTypes.bool,
 	timezone: PropTypes.string,
+	lastUpdate: PropTypes.string,
+	update: PropTypes.func,
 };
