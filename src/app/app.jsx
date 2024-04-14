@@ -51,7 +51,6 @@ export default function Application() {
 		try {
 			setLoading(true);
 			if (location) {
-				console.log('update location', location);
 				const res = await axios.get(url + location);
 				toast.success(`Weather for ${location} updated`);
 				return res.data;
@@ -153,46 +152,56 @@ export default function Application() {
 	return (
 		<div className={`container mx-auto list-none`}>
 			<div
-				className={`font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full ${
+				className={`grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-3 font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
 					cityWeather?.cityInfo?.current.is_day === 0
 						? 'bg-gradient-to-t from-blue-900 to-white p-3'
 						: 'bg-gradient-to-t from-blue-400 to-white p-3'
-				} sticky top-0 overflow-y-auto z-50`}>
-				<form
-					className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
-					onSubmit={handleSubmit}>
-					<input
-						type='text'
-						autoComplete='off'
-						placeholder='Search a city'
-						onChange={handleChange}
-						value={changeValue}
-						className='border-solid border-2 border-blue-600 p-2 rounded-md text-blue-800 text-xl  focus:border-orange-500 outline-none'
-					/>
-					<button
-						type='submit'
-						className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
-						<span>Search</span>
-					</button>
-					<button
-						onClick={addCity}
-						type='button'
-						className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
-						<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
-					</button>
-				</form>
-				<p className='text-left pt-2'>
-					{loading ? 'Loading data...' : 'Search results'}
-				</p>
-			</div>
-			{submitValue && (
-				<div className='z-0'>
-					<WeatherPanel
-						cityWeather={cityWeather?.cityInfo}
-						unpinBtn={false}
-					/>
+				}`}>
+				<div>
+					<p>Enter city or country name</p>
+					<form
+						className='grid grid-cols-1 gap-4 '
+						onSubmit={handleSubmit}>
+						<input
+							type='text'
+							autoComplete='off'
+							placeholder='Search a city'
+							onChange={handleChange}
+							value={changeValue}
+							className='border-solid border-2 border-blue-600 p-2 rounded-md text-blue-800 text-xl  focus:border-orange-500 outline-none'
+						/>
+						<button
+							type='submit'
+							className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+							<span>Search</span>
+						</button>
+						<button
+							onClick={addCity}
+							type='button'
+							className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+							<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
+						</button>
+					</form>
 				</div>
-			)}
+				<div
+					className={`${
+						cityWeather?.cityInfo?.current.is_day === 0
+							? 'bg-gradient-to-t from-blue-900 to-white'
+							: 'bg-gradient-to-t from-blue-400 to-white'
+					}`}>
+					<p className='text-left pt-2'>
+						{loading ? 'Loading data...' : 'Search results'}
+					</p>
+					{submitValue && (
+						<div className='z-0'>
+							<WeatherPanel
+								cityWeather={cityWeather?.cityInfo}
+								unpinBtn={false}
+							/>
+						</div>
+					)}
+				</div>
+			</div>
 			<div className='mt-4 z-0'>
 				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
 					{citiesWeather.map(element => (
