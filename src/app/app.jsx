@@ -5,6 +5,7 @@ import { uid } from 'uid';
 import { toast } from 'react-toastify';
 import { url } from '../api/api';
 import { fetchGeopify } from '../api/geopify';
+import not_found from '../images/not_found.JPEG';
 
 export default function Application() {
 	const [loading, setLoading] = useState(false);
@@ -12,7 +13,7 @@ export default function Application() {
 	const [citiesWeather, setCitiesWeather] = useState([]);
 	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
-	const [showResults, setShowResults] = useState(false);
+	const [showResults, setShowResults] = useState(true);
 
 	//Loading cities from local storage
 	useEffect(() => {
@@ -41,8 +42,10 @@ export default function Application() {
 	//Get user city name using IP address
 	useEffect(() => {
 		fetchGeopify().then(data => {
-			toast.info(`We found ${data.city.name} as closest city`);
 			setSubmitValue(data.city.name);
+			if (data.city.name === submitValue) {
+				toast.info(`We found ${data.city.name} as closest city`);
+			}
 		});
 	}, []);
 
@@ -55,7 +58,9 @@ export default function Application() {
 			}
 		} catch (error) {
 			console.error(error.message);
-			toast.error(`Weather for ${location} could not be updated`);
+			toast.error(
+				`${location.charAt(1).toUpperCase() + location.slice(1)} not found!`,
+			);
 		} finally {
 			setLoading(false);
 		}
@@ -214,14 +219,27 @@ export default function Application() {
 					{showResults && (
 						<div>
 							<p className='text-left pb-2'>
-								{loading ? 'Loading data...' : 'Search results'}
+								{!loading && !cityWeather?.cityInfo
+									? 'Nothing found...'
+									: loading
+									? 'Loading data...'
+									: 'Search results'}
 							</p>
-							{submitValue && (
+							{submitValue && cityWeather?.cityInfo ? (
 								<div className='z-0 font-normal'>
 									<WeatherPanel
 										cityWeather={cityWeather?.cityInfo}
 										unpinBtn={false}
 									/>
+								</div>
+							) : (
+								<div className='flex items-center flex-col h-fit '>
+									<div className='rounded-2xl overflow-hidden max-w-96'>
+										<img
+											src={not_found}
+											alt=''
+										/>
+									</div>
 								</div>
 							)}
 						</div>
