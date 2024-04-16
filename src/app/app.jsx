@@ -12,6 +12,7 @@ export default function Application() {
 	const [citiesWeather, setCitiesWeather] = useState([]);
 	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
+	const [showResults, setShowResults] = useState(false);
 
 	//Loading cities from local storage
 	useEffect(() => {
@@ -102,6 +103,7 @@ export default function Application() {
 
 	const onFormSubmit = data => {
 		setSubmitValue(data);
+		setShowResults(true);
 	};
 
 	const clearForm = () => {
@@ -145,6 +147,7 @@ export default function Application() {
 				setCitiesWeather(updatedCitiesWeather);
 				localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 				clearForm();
+				setShowResults(false);
 				toast.success(`${cityWeather?.cityInfo?.location.name} added to your list`);
 			}
 		} catch (error) {
@@ -190,18 +193,28 @@ export default function Application() {
 							className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 							<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
 						</button>
+						<button
+							onClick={() => setShowResults(false)}
+							type='button'
+							className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+							<span>Hide results</span>
+						</button>
 					</form>
 				</div>
 				<div>
-					<p className='text-left pt-2 pb-2'>
-						{loading ? 'Loading data...' : 'Search results'}
-					</p>
-					{submitValue && (
-						<div className='z-0 font-normal'>
-							<WeatherPanel
-								cityWeather={cityWeather?.cityInfo}
-								unpinBtn={false}
-							/>
+					{showResults && (
+						<div>
+							<p className='text-left pt-2 pb-2'>
+								{loading ? 'Loading data...' : 'Search results'}
+							</p>
+							{submitValue && (
+								<div className='z-0 font-normal'>
+									<WeatherPanel
+										cityWeather={cityWeather?.cityInfo}
+										unpinBtn={false}
+									/>
+								</div>
+							)}
 						</div>
 					)}
 				</div>
