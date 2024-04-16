@@ -53,7 +53,7 @@ export default function WeatherPanel({
 					Local time: <Clock timezone={cityWeather?.location.tz_id} />
 				</p>
 				{unpinBtn !== false && (
-					<p className='text-amber-100'>Last update: {lastUpdate}</p>
+					<p className='text-amber-100 mb-1'>Last update: {lastUpdate}</p>
 				)}
 				{unpinBtn !== false && (
 					<button
