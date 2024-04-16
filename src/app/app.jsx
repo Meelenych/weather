@@ -18,7 +18,6 @@ export default function Application() {
 	useEffect(() => {
 		const myCities = JSON.parse(localStorage.getItem('myCities')) || [];
 		if (Array.isArray(myCities)) {
-			// console.log('myCities', myCities);
 			setCitiesWeather(myCities);
 		} else {
 			console.error(
@@ -42,7 +41,6 @@ export default function Application() {
 	//Get user city name using IP address
 	useEffect(() => {
 		fetchGeopify().then(data => {
-			// console.log('geopify', data);
 			toast.info(`We found ${data.city.name} as closest city`);
 			setSubmitValue(data.city.name);
 		});
@@ -53,7 +51,6 @@ export default function Application() {
 			setLoading(true);
 			if (location) {
 				const res = await axios.get(url + location);
-
 				return res.data;
 			}
 		} catch (error) {
@@ -164,47 +161,59 @@ export default function Application() {
 	return (
 		<div className={`container mx-auto list-none`}>
 			<div
-				className={`grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 font-bold text-xl text-amber-700 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
+				className={`grid  ${
+					!showResults
+						? 'grid-cols-1'
+						: 'lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1'
+				} gap-5 font-bold text-xl text-amber-700 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
 					cityWeather?.cityInfo?.current.is_day === 0
 						? 'bg-gradient-to-t from-blue-900 to-white p-3'
 						: 'bg-gradient-to-t from-blue-400 to-white p-3'
 				}`}>
 				<div>
-					<p className='pt-2 pb-2'>Enter city or country name</p>
+					{showResults && <p className='pb-2'>Enter city or country name</p>}
 					<form
 						className='grid grid-cols-1 gap-4 '
 						onSubmit={handleSubmit}>
-						<input
-							type='text'
-							autoComplete='off'
-							placeholder='Search a city'
-							onChange={handleChange}
-							value={changeValue}
-							className='border-solid border-2 border-blue-600 p-2 rounded-md text-blue-800 text-xl  focus:border-orange-500 outline-none'
-						/>
+						{showResults && (
+							<>
+								<input
+									type='text'
+									autoComplete='off'
+									placeholder='Search a city'
+									onChange={handleChange}
+									value={changeValue}
+									className='border-solid border-2 border-blue-600 p-2 rounded-md text-blue-800 text-xl  focus:border-orange-500 outline-none'
+								/>
+								<button
+									type='submit'
+									className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+									<span>Search</span>
+								</button>
+								<button
+									onClick={addCity}
+									type='button'
+									className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+									<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
+								</button>
+							</>
+						)}
 						<button
-							type='submit'
-							className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
-							<span>Search</span>
-						</button>
-						<button
-							onClick={addCity}
+							onClick={() => setShowResults(!showResults)}
 							type='button'
-							className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
-							<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
-						</button>
-						<button
-							onClick={() => setShowResults(false)}
-							type='button'
 							className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
-							<span>Hide results</span>
+							<span>
+								{showResults
+									? 'Hide results and controls'
+									: 'Show results and controls'}
+							</span>
 						</button>
 					</form>
 				</div>
-				<div>
+				<>
 					{showResults && (
 						<div>
-							<p className='text-left pt-2 pb-2'>
+							<p className='text-left pb-2'>
 								{loading ? 'Loading data...' : 'Search results'}
 							</p>
 							{submitValue && (
@@ -217,7 +226,7 @@ export default function Application() {
 							)}
 						</div>
 					)}
-				</div>
+				</>
 			</div>
 			<div className='mt-4 z-0'>
 				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
