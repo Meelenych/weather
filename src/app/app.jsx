@@ -42,7 +42,7 @@ export default function Application() {
 	useEffect(() => {
 		fetchGeopify().then(data => {
 			// console.log('geopify', data);
-			toast.info(`Your city is ${data.city.name}`);
+			toast.info(`We found ${data.city.name} as closest city`);
 			setSubmitValue(data.city.name);
 		});
 	}, []);
@@ -52,7 +52,7 @@ export default function Application() {
 			setLoading(true);
 			if (location) {
 				const res = await axios.get(url + location);
-				toast.success(`Weather for ${location} updated`);
+
 				return res.data;
 			}
 		} catch (error) {
@@ -215,7 +215,10 @@ export default function Application() {
 							cityWeather={element.cityInfo}
 							unpin={() => unpin(element.id)}
 							lastUpdate={element.lastUpdate}
-							update={() => loadData(element.cityInfo.location.name)}
+							update={() => {
+								loadData(element.cityInfo.location.name);
+								toast.success(`Weather for ${element.cityInfo.location.name} updated`);
+							}}
 						/>
 					))}
 				</ul>
