@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Clock from '../../clock/clock';
 import closeIcon from '../../images/close.svg';
-import formatTime from '../../clock/formatTime';
 
 export default function WeatherPanel({
 	cityWeather,
@@ -11,7 +10,6 @@ export default function WeatherPanel({
 	lastUpdate,
 	update,
 }) {
-	// console.log('lastUpdate', lastUpdate);
 	return (
 		<li className='w-full'>
 			<div
@@ -19,8 +17,8 @@ export default function WeatherPanel({
 					unpinBtn !== false
 						? `relative ${
 								cityWeather?.current.is_day === 0
-									? 'bg-blue-900 p-3 shadow-xl'
-									: 'bg-blue-400 p-3 shadow-xl'
+									? 'bg-blue-900 p-3'
+									: 'bg-blue-400 p-3'
 						  }`
 						: 'relative bg-transparent'
 				}>
@@ -62,7 +60,6 @@ export default function WeatherPanel({
 						Update
 					</button>
 				)}
-
 				{unpinBtn !== false && (
 					<button
 						type='button'
