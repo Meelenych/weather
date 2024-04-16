@@ -43,9 +43,7 @@ export default function Application() {
 	useEffect(() => {
 		fetchGeopify().then(data => {
 			setSubmitValue(data.city.name);
-			if (data.city.name === submitValue) {
-				toast.info(`We found ${data.city.name} as closest city`);
-			}
+			toast.info(`We found ${data.city.name} as the closest city to you`);
 		});
 	}, []);
 
@@ -123,7 +121,7 @@ export default function Application() {
 
 	//Adds city to watchlist
 	const addCity = async () => {
-		const trimmedValue = changeValue.toLowerCase().trim();
+		const trimmedValue = submitValue.toLowerCase().trim();
 		if (trimmedValue === '') {
 			clearForm();
 			return;
@@ -233,7 +231,7 @@ export default function Application() {
 									/>
 								</div>
 							) : (
-								<div className='flex items-center flex-col h-fit '>
+								<div className='flex items-center flex-col h-fit'>
 									<div className='rounded-2xl overflow-hidden max-w-96'>
 										<img
 											src={not_found}
