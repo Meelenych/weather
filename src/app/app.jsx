@@ -161,13 +161,13 @@ export default function Application() {
 	return (
 		<div className={`container mx-auto list-none`}>
 			<div
-				className={`grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-3 font-semibold text-xl text-amber-200 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
+				className={`grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 font-bold text-xl text-amber-700 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
 					cityWeather?.cityInfo?.current.is_day === 0
 						? 'bg-gradient-to-t from-blue-900 to-white p-3'
 						: 'bg-gradient-to-t from-blue-400 to-white p-3'
 				}`}>
 				<div>
-					<p>Enter city or country name</p>
+					<p className='pt-2 pb-2'>Enter city or country name</p>
 					<form
 						className='grid grid-cols-1 gap-4 '
 						onSubmit={handleSubmit}>
@@ -192,17 +192,12 @@ export default function Application() {
 						</button>
 					</form>
 				</div>
-				<div
-					className={`${
-						cityWeather?.cityInfo?.current.is_day === 0
-							? 'bg-gradient-to-t from-blue-900 to-white'
-							: 'bg-gradient-to-t from-blue-400 to-white'
-					}`}>
-					<p className='text-left pt-2'>
+				<div>
+					<p className='text-left pt-2 pb-2'>
 						{loading ? 'Loading data...' : 'Search results'}
 					</p>
 					{submitValue && (
-						<div className='z-0'>
+						<div className='z-0 font-normal'>
 							<WeatherPanel
 								cityWeather={cityWeather?.cityInfo}
 								unpinBtn={false}

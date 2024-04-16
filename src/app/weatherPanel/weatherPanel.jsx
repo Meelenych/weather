@@ -53,14 +53,11 @@ export default function WeatherPanel({
 					Local time: <Clock timezone={cityWeather?.location.tz_id} />
 				</p>
 				{unpinBtn !== false && (
-					<>
-						<p>Last update: {lastUpdate}</p>
-						{/* <p>Updated to local time: {formatTime(cityWeather?.location.tz_id)}</p> */}
-					</>
+					<p className='text-amber-100'>Last update: {lastUpdate}</p>
 				)}
 				{unpinBtn !== false && (
 					<button
-						className='text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1'
+						className=' w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1'
 						onClick={() => update()}>
 						Update
 					</button>
