@@ -149,6 +149,10 @@ export default function Application() {
 				clearForm();
 				setShowResults(false);
 				toast.success(`${cityWeather?.cityInfo?.location.name} added to your list`);
+				window.scrollTo({
+					top: document.body.scrollHeight,
+					behavior: 'smooth',
+				});
 			}
 		} catch (error) {
 			console.error(error.message);
