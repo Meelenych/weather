@@ -17,7 +17,7 @@ export default function Application() {
 	useEffect(() => {
 		const myCities = JSON.parse(localStorage.getItem('myCities')) || [];
 		if (Array.isArray(myCities)) {
-			console.log('myCities', myCities);
+			// console.log('myCities', myCities);
 			setCitiesWeather(myCities);
 		} else {
 			console.error(
@@ -41,7 +41,7 @@ export default function Application() {
 	//Get user city name using IP address
 	useEffect(() => {
 		fetchGeopify().then(data => {
-			console.log('geopify', data);
+			// console.log('geopify', data);
 			toast.info(`Your city is ${data.city.name}`);
 			setSubmitValue(data.city.name);
 		});
@@ -67,14 +67,23 @@ export default function Application() {
 		try {
 			if (locationName || submitValue) {
 				const data = await fetchData(locationName ? locationName : submitValue);
-				setCityWeather({ id: uid(), cityInfo: data });
+				setCityWeather({
+					id: uid(),
+					cityInfo: data,
+					lastUpdate: new Date().toLocaleString(),
+				});
 				const updatedCitiesWeather = citiesWeather.map(city => {
 					if (city.cityInfo.location.name === locationName) {
-						return { id: city.id, cityInfo: data };
+						return {
+							id: city.id,
+							cityInfo: data,
+							lastUpdate: new Date().toLocaleString(),
+						};
 					} else {
 						return city;
 					}
 				});
+				console.log('updatedCitiesWeather', updatedCitiesWeather);
 				setCitiesWeather(updatedCitiesWeather);
 				localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
 			}
@@ -131,7 +140,7 @@ export default function Application() {
 			} else {
 				const updatedCitiesWeather = [
 					...citiesWeather,
-					{ id: uid(), cityInfo: data },
+					{ id: uid(), cityInfo: data, lastUpdate: new Date().toLocaleString() },
 				];
 				setCitiesWeather(updatedCitiesWeather);
 				localStorage.setItem('myCities', JSON.stringify(updatedCitiesWeather));
@@ -210,7 +219,7 @@ export default function Application() {
 							className='basis-1/4'
 							cityWeather={element.cityInfo}
 							unpin={() => unpin(element.id)}
-							lastUpdate={new Date().toLocaleString()}
+							lastUpdate={element.lastUpdate}
 							update={() => loadData(element.cityInfo.location.name)}
 						/>
 					))}

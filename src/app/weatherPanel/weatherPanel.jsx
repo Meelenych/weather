@@ -11,14 +11,19 @@ export default function WeatherPanel({
 	lastUpdate,
 	update,
 }) {
+	// console.log('lastUpdate', lastUpdate);
 	return (
 		<li className='w-full'>
 			<div
-				className={`relative ${
-					cityWeather?.current.is_day === 0
-						? 'bg-blue-900 p-3 shadow-xl'
-						: 'bg-blue-400 p-3 shadow-xl'
-				}`}>
+				className={
+					unpinBtn !== false
+						? `relative ${
+								cityWeather?.current.is_day === 0
+									? 'bg-blue-900 p-3 shadow-xl'
+									: 'bg-blue-400 p-3 shadow-xl'
+						  }`
+						: 'relative bg-transparent'
+				}>
 				<p className='text-amber-500 font-medium text-xl'>
 					City: {cityWeather?.location.name}
 				</p>
@@ -50,7 +55,7 @@ export default function WeatherPanel({
 				{unpinBtn !== false && (
 					<>
 						<p>Last update: {lastUpdate}</p>
-						<p>Updated to local time: {formatTime(cityWeather?.location.tz_id)}</p>
+						{/* <p>Updated to local time: {formatTime(cityWeather?.location.tz_id)}</p> */}
 					</>
 				)}
 				{unpinBtn !== false && (
