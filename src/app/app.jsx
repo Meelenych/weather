@@ -57,7 +57,7 @@ export default function Application() {
 		} catch (error) {
 			console.error(error.message);
 			toast.error(
-				`${location.charAt(1).toUpperCase() + location.slice(1)} not found!`,
+				`${location.charAt(0).toUpperCase() + location.slice(1)} not found!`,
 			);
 		} finally {
 			setLoading(false);
