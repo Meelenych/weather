@@ -3,5 +3,11 @@
 @tailwind utilities;
 
 body {
-  background-color: #000000;
+  background-color: #000000e4;
+}
+
+.panel {
+  @media (min-width: 320px) and (max-width: 640px) {
+    height: 100vh;
+  }
 }

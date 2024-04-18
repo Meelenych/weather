@@ -168,14 +168,14 @@ export default function Application() {
 	return (
 		<div className={`container mx-auto list-none`}>
 			<div
-				className={`grid  ${
+				className={`grid md:h-min ${
 					!showResults
 						? 'grid-cols-1'
-						: 'lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1'
-				} gap-5 font-bold text-xl text-amber-700 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
+						: 'lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 panel'
+				} gap-5 font-bold text-xl text-amber-300 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
 					cityWeather?.cityInfo?.current.is_day === 0
-						? 'bg-gradient-to-t from-blue-900 to-white p-3'
-						: 'bg-gradient-to-t from-blue-400 to-white p-3'
+						? 'bg-gradient-to-t from-blue-900 to-gray-800 p-3'
+						: 'bg-gradient-to-t from-blue-400 to-gray-800 p-3'
 				}`}>
 				<div>
 					{showResults && <p className='pb-2'>Enter city or country name</p>}
@@ -249,7 +249,7 @@ export default function Application() {
 				</>
 			</div>
 			<div className='mt-4 z-0'>
-				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
 					{citiesWeather.map(element => (
 						<WeatherPanel
 							key={element.id}
