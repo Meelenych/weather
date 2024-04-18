@@ -177,7 +177,7 @@ export default function Application() {
 						? 'bg-gradient-to-t from-blue-900 to-gray-800 p-3'
 						: 'bg-gradient-to-t from-blue-400 to-gray-800 p-3'
 				}`}>
-				<div>
+				<div className='shrink'>
 					{showResults && <p className='pb-2'>Enter city or country name</p>}
 					<form
 						className='grid grid-cols-1 gap-4 '

@@ -11,3 +11,9 @@ body {
     height: 100vh;
   }
 }
+
+.shrink {
+  @media (min-width: 320px) and (max-width: 640px) {
+    height: 10dvh;
+  }
+}
