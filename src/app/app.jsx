@@ -195,13 +195,13 @@ export default function Application() {
 								/>
 								<button
 									type='submit'
-									className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+									className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl  bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 									<span>Search</span>
 								</button>
 								<button
 									onClick={addCity}
 									type='button'
-									className='border-solid border-2 border-blue-600 p-2 rounded-md text-indigo-800 text-xl  bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+									className='border-solid border-2 border-blue-600 p-2 rounded-md text-xl bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 									<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
 								</button>
 							</>
@@ -209,7 +209,7 @@ export default function Application() {
 						<button
 							onClick={() => setShowResults(!showResults)}
 							type='button'
-							className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+							className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl  bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 							<span>{showResults ? 'Show watch list' : 'Back to search'}</span>
 						</button>
 					</form>

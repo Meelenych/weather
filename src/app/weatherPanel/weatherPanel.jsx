@@ -51,7 +51,10 @@ export default function WeatherPanel({
 					{cityWeather?.current.feelslike_f} F
 				</p>
 				{showMore && (
-					<div>
+					<div
+						className={`overflow-hidden transition-height duration-300 ${
+							showMore ? 'h-auto' : 'h-0'
+						}`}>
 						<p className='text-amber-100'>
 							Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C or{' '}
 							{cityWeather?.current.temp_f} F
@@ -90,7 +93,9 @@ export default function WeatherPanel({
 						</button>
 					)}
 					<button
-						className=' w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1'
+						className={`w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1 ${
+							unpinBtn !== false ? 'p-0' : 'p-2'
+						}`}
 						onClick={() => handleClickShowMore()}>
 						{showMore ? 'Hide details' : 'Show details'}
 					</button>
