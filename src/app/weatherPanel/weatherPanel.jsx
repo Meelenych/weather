@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Clock from '../../clock/clock';
+import { windScale } from '../../helpers/wind';
 import closeIcon from '../../images/close.svg';
 
 export default function WeatherPanel({
@@ -38,6 +39,17 @@ export default function WeatherPanel({
 				<p className='text-amber-100'>
 					Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C or{' '}
 					{cityWeather?.current.temp_f} F
+				</p>
+				<p className='text-amber-100'>
+					Pressure: {cityWeather?.current.pressure_in} inHg or{' '}
+					{cityWeather?.current.pressure_mb} mb
+				</p>
+				<p className='text-amber-100'>
+					Wind: direction {cityWeather?.current.wind_dir},{' '}
+					{windScale(cityWeather?.current.wind_mph).toLowerCase()}
+				</p>
+				<p className='text-amber-100'>
+					Humidity: {cityWeather?.current.humidity} %
 				</p>
 				<img
 					src={

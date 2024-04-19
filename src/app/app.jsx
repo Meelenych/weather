@@ -210,11 +210,7 @@ export default function Application() {
 							onClick={() => setShowResults(!showResults)}
 							type='button'
 							className='border-solid border-2 border-blue-600 p-2 rounded-md  text-xl font-semiboldfont-semibold bg-blue-600  hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
-							<span>
-								{showResults
-									? 'Hide results and controls'
-									: 'Show results and controls'}
-							</span>
+							<span>{showResults ? 'Show watch list' : 'Back to search'}</span>
 						</button>
 					</form>
 				</div>
