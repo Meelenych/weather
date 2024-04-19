@@ -12,6 +12,11 @@ export default function WeatherPanel({
 	lastUpdate,
 	update,
 }) {
+	const [showMore, setShowMore] = React.useState(false);
+	const handleClickShowMore = () => {
+		setShowMore(!showMore);
+	};
+
 	return (
 		<li className='w-full'>
 			<div
@@ -45,38 +50,51 @@ export default function WeatherPanel({
 					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C or{' '}
 					{cityWeather?.current.feelslike_f} F
 				</p>
-				<p className='text-amber-100'>
-					Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C or{' '}
-					{cityWeather?.current.temp_f} F
-				</p>
-				<p className='text-amber-100'>
-					Pressure: {pressureScale(cityWeather?.current.pressure_in)}
-				</p>
-				<p className='text-amber-100'>
-					Wind: direction {cityWeather?.current.wind_dir},{' '}
-					{windScale(cityWeather?.current.wind_mph).toLowerCase()}
-				</p>
-				<p className='text-amber-100'>
-					Humidity: {cityWeather?.current.humidity} %
-				</p>
-				<p className='text-amber-100'>
-					Visibility: {cityWeather?.current.vis_km} km or{' '}
-					{cityWeather?.current.vis_miles} mi
-				</p>
-
-				<p className='flex text-amber-100'>
-					Local time: <Clock timezone={cityWeather?.location.tz_id} />
-				</p>
-				{unpinBtn !== false && (
-					<p className='text-amber-100 mb-1'>Last update: {lastUpdate}</p>
+				{showMore && (
+					<div>
+						<p className='text-amber-100'>
+							Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C or{' '}
+							{cityWeather?.current.temp_f} F
+						</p>
+						<p className='text-amber-100'>
+							Pressure: {pressureScale(cityWeather?.current.pressure_in)}
+						</p>
+						<p className='text-amber-100'>
+							Wind: direction {cityWeather?.current.wind_dir},{' '}
+							{windScale(cityWeather?.current.wind_mph).toLowerCase()}
+						</p>
+						<p className='text-amber-100'>
+							Humidity: {cityWeather?.current.humidity} %
+						</p>
+						<p className='text-amber-100'>
+							Visibility: {cityWeather?.current.vis_km} km or{' '}
+							{cityWeather?.current.vis_miles} mi
+						</p>
+						<p className='flex text-amber-100'>
+							Local time: <Clock timezone={cityWeather?.location.tz_id} />
+						</p>
+						{unpinBtn !== false && (
+							<p className='text-amber-100 mb-1'>Last update: {lastUpdate}</p>
+						)}
+					</div>
 				)}
-				{unpinBtn !== false && (
+				<div
+					className={`grid  gap-2 mt-2 ${
+						unpinBtn !== false ? 'grid-cols-2' : 'grid-cols-1'
+					}`}>
+					{unpinBtn !== false && (
+						<button
+							className=' w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1'
+							onClick={() => update()}>
+							Update
+						</button>
+					)}
 					<button
 						className=' w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1'
-						onClick={() => update()}>
-						Update
+						onClick={() => handleClickShowMore()}>
+						{showMore ? 'Hide details' : 'Show details'}
 					</button>
-				)}
+				</div>
 				{unpinBtn !== false && (
 					<button
 						type='button'

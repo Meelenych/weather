@@ -225,7 +225,7 @@ export default function Application() {
 									: 'Search results'}
 							</p>
 							{submitValue && cityWeather?.cityInfo ? (
-								<div className='z-0 font-normal'>
+								<div className='z-0 font-normal leading-6'>
 									<WeatherPanel
 										cityWeather={cityWeather?.cityInfo}
 										unpinBtn={false}
