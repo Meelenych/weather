@@ -33,6 +33,14 @@ export default function WeatherPanel({
 				<p className=' font-medium text-amber-500 '>
 					Country: {cityWeather?.location.country}
 				</p>
+				<img
+					src={
+						cityWeather
+							? `http://${cityWeather?.current.condition.icon.slice(2)}`
+							: ''
+					}
+				/>
+				<p className='text-amber-100'>{cityWeather?.current.condition.text}</p>
 				<p className='text-amber-100'>
 					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C or{' '}
 					{cityWeather?.current.feelslike_f} F
@@ -51,14 +59,11 @@ export default function WeatherPanel({
 				<p className='text-amber-100'>
 					Humidity: {cityWeather?.current.humidity} %
 				</p>
-				<img
-					src={
-						cityWeather
-							? `http://${cityWeather?.current.condition.icon.slice(2)}`
-							: ''
-					}
-				/>
-				<p className='text-amber-100'>{cityWeather?.current.condition.text}</p>
+				<p className='text-amber-100'>
+					Visibility: {cityWeather?.current.vis_km} km or{' '}
+					{cityWeather?.current.vis_miles} mi
+				</p>
+
 				<p className='flex text-amber-100'>
 					Local time: <Clock timezone={cityWeather?.location.tz_id} />
 				</p>
