@@ -33,7 +33,7 @@ export default function WeatherPanel({
 				</p>
 				<p className='text-amber-100'>
 					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C or{' '}
-					{cityWeather?.current.temp_f} F
+					{cityWeather?.current.feelslike_f} F
 				</p>
 				<p className='text-amber-100'>
 					Temperature: {cityWeather?.current.temp_c} <span>&#176;</span>C or{' '}

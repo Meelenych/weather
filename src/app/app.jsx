@@ -52,6 +52,7 @@ export default function Application() {
 			setLoading(true);
 			if (location) {
 				const res = await axios.get(url + location);
+				console.log(res.data);
 				return res.data;
 			}
 		} catch (error) {
