@@ -246,21 +246,23 @@ export default function Application() {
 				</>
 			</div>
 			<div className='mt-4 z-0'>
-				<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
-					{citiesWeather.map(element => (
-						<WeatherPanel
-							key={element.id}
-							className='basis-1/4'
-							cityWeather={element.cityInfo}
-							unpin={() => unpin(element.id)}
-							lastUpdate={element.lastUpdate}
-							update={() => {
-								loadData(element.cityInfo.location.name);
-								toast.success(`Weather for ${element.cityInfo.location.name} updated`);
-							}}
-						/>
-					))}
-				</ul>
+				{!showResults && (
+					<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
+						{citiesWeather.map(element => (
+							<WeatherPanel
+								key={element.id}
+								className='basis-1/4'
+								cityWeather={element.cityInfo}
+								unpin={() => unpin(element.id)}
+								lastUpdate={element.lastUpdate}
+								update={() => {
+									loadData(element.cityInfo.location.name);
+									toast.success(`Weather for ${element.cityInfo.location.name} updated`);
+								}}
+							/>
+						))}
+					</ul>
+				)}
 			</div>
 		</div>
 	);
