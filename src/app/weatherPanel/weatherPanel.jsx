@@ -121,7 +121,7 @@ export default function WeatherPanel({
 					<button
 						type='button'
 						onClick={unpin}
-						className='border absolute top-2 right-2 active:scale-90 rounded-md text-lg font-semibold bg-amber-500 text-blue-900 shadow-amber-500 hover:border-orange-500 active:bg-orange-500 active:border-orange-500'>
+						className='border absolute top-2 right-2 active:scale-90 rounded-md bg-amber-500 shadow-amber-500 hover:border-orange-500 active:bg-orange-500 active:border-orange-500'>
 						<img
 							src={closeIcon}
 							width={30}
@@ -135,7 +135,7 @@ export default function WeatherPanel({
 					<h2 className='text-left text-xl font-bold text-amber-300 flex mb-3 justify-between'>
 						<span>Daily Forecast</span>
 						<button
-							className={`active:scale-90 rounded-md bg-amber-500 p-0.5 ${
+							className={`border active:scale-90 rounded-md bg-amber-500 ${
 								unpinBtn !== false ? 'p-0' : 'p-2'
 							}`}
 							onClick={() => toggleForecast()}>
