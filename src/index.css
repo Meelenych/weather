@@ -4,13 +4,13 @@
 
 body {
   background-color: #000000e4;
-  color:white;
+  color: white;
   font-weight: normal;
   color: inherit;
 }
 
 .panel {
   @media (min-width: 320px) and (max-width: 640px) {
-    height: 100vh;
+    height: fit-content;
   }
 }

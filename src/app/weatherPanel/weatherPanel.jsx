@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ForecastPanel from '../forecast/forecast';
 import Clock from '../../clock/clock';
 import { windScale } from '../../helpers/wind';
 import { pressureScale } from '../../helpers/pressure';
@@ -11,10 +12,15 @@ export default function WeatherPanel({
 	unpinBtn,
 	lastUpdate,
 	update,
+	forecast,
 }) {
 	const [showMore, setShowMore] = React.useState(false);
 	const handleClickShowMore = () => {
 		setShowMore(!showMore);
+	};
+	const [showForecast, setShowForecast] = React.useState(false);
+	const toggleForecast = () => {
+		setShowForecast(!showForecast);
 	};
 
 	return (
@@ -87,13 +93,13 @@ export default function WeatherPanel({
 					}`}>
 					{unpinBtn !== false && (
 						<button
-							className=' w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1'
+							className=' border w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1  hover:border-orange-500 active:bg-orange-500 active:border-orange-500'
 							onClick={() => update()}>
 							Update
 						</button>
 					)}
 					<button
-						className={`w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1 ${
+						className={`border w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1 hover:border-orange-500 active:bg-orange-500 active:border-orange-500 ${
 							unpinBtn !== false ? 'p-0' : 'p-2'
 						}`}
 						onClick={() => handleClickShowMore()}>
@@ -101,10 +107,21 @@ export default function WeatherPanel({
 					</button>
 				</div>
 				{unpinBtn !== false && (
+					<div className='mt-3'>
+						<button
+							className={`border w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1 hover:border-orange-500 active:bg-orange-500 active:border-orange-500 ${
+								unpinBtn !== false ? 'p-0' : 'p-2'
+							}`}
+							onClick={() => toggleForecast()}>
+							{showForecast ? 'Hide daily forecast' : 'Show daily forecast'}
+						</button>
+					</div>
+				)}
+				{unpinBtn !== false && (
 					<button
 						type='button'
 						onClick={unpin}
-						className='absolute top-2 right-2 active:scale-90 rounded-md text-lg font-semibold bg-amber-500 text-blue-900'>
+						className='border absolute top-2 right-2 active:scale-90 rounded-md text-lg font-semibold bg-amber-500 text-blue-900 shadow-amber-500 hover:border-orange-500 active:bg-orange-500 active:border-orange-500'>
 						<img
 							src={closeIcon}
 							width={30}
@@ -113,6 +130,35 @@ export default function WeatherPanel({
 					</button>
 				)}
 			</div>
+			{showForecast && forecast?.length > 0 && (
+				<div className='mt-4 absolute top0 md:top-1/2 left-1/2 transform -translate-x-1/2 translate-y-0 md:-translate-y-1/2 w-[360px] md:w-[1024px] z-50 bg-black/75 p-5 shadow-[0_0_30px_8px] shadow-amber-100'>
+					<h2 className='text-left text-xl font-bold text-amber-300 flex mb-3 justify-between'>
+						<span>Daily Forecast</span>
+						<button
+							className={`active:scale-90 rounded-md bg-amber-500 p-0.5 ${
+								unpinBtn !== false ? 'p-0' : 'p-2'
+							}`}
+							onClick={() => toggleForecast()}>
+							<img
+								src={closeIcon}
+								width={30}
+								alt=''
+							/>
+						</button>
+					</h2>
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+						{forecast.map(day => (
+							<div key={day.date_epoch}>
+								<ForecastPanel
+									day={day}
+									isDay={cityWeather?.cityInfo?.current.is_day}
+									city={cityWeather?.location.name}
+								/>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
 		</li>
 	);
 }
@@ -124,4 +170,5 @@ WeatherPanel.propTypes = {
 	timezone: PropTypes.string,
 	lastUpdate: PropTypes.string,
 	update: PropTypes.func,
+	forecast: PropTypes.array,
 };

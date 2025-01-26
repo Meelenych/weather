@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import WeatherPanel from './weatherPanel/weatherPanel';
+import ForecastPanel from './forecast/forecast';
 import axios from 'axios';
 import { uid } from 'uid';
 import { toast } from 'react-toastify';
-import { url } from '../api/api';
+import { url, forecastUrl } from '../api/api';
 import { fetchGeopify } from '../api/geopify';
 import not_found from '../images/not_found.JPEG';
+import { stringify } from 'postcss';
 
 export default function Application() {
 	const [loading, setLoading] = useState(false);
@@ -14,6 +16,7 @@ export default function Application() {
 	const [submitValue, setSubmitValue] = useState('');
 	const [changeValue, setChangeValue] = useState('');
 	const [showResults, setShowResults] = useState(true);
+	const [forecast, setForecast] = useState(null);
 
 	//Loading cities from local storage
 	useEffect(() => {
@@ -51,7 +54,11 @@ export default function Application() {
 		try {
 			setLoading(true);
 			if (location) {
+				const days = '&days=7';
 				const res = await axios.get(url + location);
+				const forecast = await axios.get(forecastUrl + location + days);
+				console.log('forecast', forecast.data.forecast.forecastday);
+				setForecast([...forecast.data.forecast.forecastday]);
 				console.log(res.data);
 				return res.data;
 			}
@@ -169,11 +176,9 @@ export default function Application() {
 	return (
 		<div className={`container mx-auto list-none`}>
 			<div
-				className={`grid md:h-min ${
-					!showResults
-						? 'grid-cols-1'
-						: 'lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 panel'
-				} gap-5 font-bold text-xl text-amber-300 p-3 rounded-tr-xl rounded-tl-xl w-full sticky top-0 overflow-y-auto z-50 ${
+				className={`grid  ${
+					!showResults ? 'grid-cols-1' : 'md:grid-cols-2 grid-cols-1 panel'
+				} gap-5 font-bold text-xl text-amber-300 p-3 rounded-tr-xl rounded-tl-xl w-full overflow-y-auto z-50 ${
 					cityWeather?.cityInfo?.current.is_day === 0
 						? 'bg-gradient-to-t from-blue-900 to-gray-800 p-3'
 						: 'bg-gradient-to-t from-blue-400 to-gray-800 p-3'
@@ -201,7 +206,7 @@ export default function Application() {
 								<button
 									onClick={addCity}
 									type='button'
-									className='border-solid border-2 border-blue-600 p-2 rounded-md text-xl bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
+									className='whitespace-nowrap overflow-hidden border-solid border-2 border-blue-600 p-2 rounded-md text-xl bg-blue-600 hover:border-orange-500 active:translate-y-0 active:bg-orange-500 active:border-orange-500 text-white'>
 									<span>Add {cityWeather?.cityInfo?.location.name} to your list</span>
 								</button>
 							</>
@@ -222,7 +227,7 @@ export default function Application() {
 									? 'Nothing found...'
 									: loading
 									? 'Loading data...'
-									: 'Search results'}
+									: 'Weather now'}
 							</p>
 							{submitValue && cityWeather?.cityInfo ? (
 								<div className='z-0 font-normal leading-6'>
@@ -232,7 +237,7 @@ export default function Application() {
 									/>
 								</div>
 							) : (
-								<div className='flex items-center flex-col h-fit'>
+								<div className='flex items-center flex-col '>
 									<div className='rounded-2xl overflow-hidden max-w-96'>
 										<img
 											src={not_found}
@@ -245,6 +250,24 @@ export default function Application() {
 					)}
 				</>
 			</div>
+			{showResults && forecast?.length > 0 && (
+				<div className='mt-4'>
+					<h2 className='text-left text-xl font-bold text-amber-300'>
+						Daily Forecast
+					</h2>
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+						{forecast.map(day => (
+							<div key={day.date_epoch}>
+								<ForecastPanel
+									day={day}
+									isDay={cityWeather?.cityInfo?.current.is_day}
+									city={cityWeather?.cityInfo.location.name}
+								/>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
 			<div className='mt-4 z-0'>
 				{!showResults && (
 					<ul className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
@@ -259,6 +282,7 @@ export default function Application() {
 									loadData(element.cityInfo.location.name);
 									toast.success(`Weather for ${element.cityInfo.location.name} updated`);
 								}}
+								forecast={forecast}
 							/>
 						))}
 					</ul>
