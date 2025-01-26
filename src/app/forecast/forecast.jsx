@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function ForecastPanel({ day, isDay, city }) {
+	console.log(isDay);
 	return (
 		<div
-			className={`p-3 ${isDay ? 'bg-blue-400' : 'bg-blue-900'} text-amber-100
+			className={`p-3 ${isDay !== 0 ? 'bg-blue-400' : 'bg-blue-900'} text-amber-100
 `}>
 			<h3 className='text-xl mb-2 text-amber-500 font-medium grid grid-cols-5 gap-2'>
-				<span className='truncate col-span-3'>{city}</span>{' '}
+				<span className='truncate col-span-3'>{city}</span>
 				<span className='col-span-2 text-right'>
 					{day?.date
 						? new Intl.DateTimeFormat('en-US', {
@@ -56,6 +57,13 @@ export default function ForecastPanel({ day, isDay, city }) {
 			<p>Moonset: {day?.astro.moonset}</p>
 			<p>Moon illumination: {day?.astro.moon_illumination}</p>
 			<p>Moon phase : {day?.astro.moon_phase}</p>
+
+			<p>
+				Weather alerts:{' '}
+				{day?.alerts?.length > 0
+					? day?.alerts.map(alert => alert.message).join(', ')
+					: 'No weather alerts'}
+			</p>
 		</div>
 	);
 }
@@ -63,7 +71,7 @@ export default function ForecastPanel({ day, isDay, city }) {
 ForecastPanel.propTypes = {
 	day: PropTypes.object,
 	// unpin: PropTypes.func,
-	isDay: PropTypes.bool,
+	isDay: PropTypes.number,
 	city: PropTypes.string,
 	// lastUpdate: PropTypes.string,
 	// update: PropTypes.func,

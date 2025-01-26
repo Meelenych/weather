@@ -151,7 +151,7 @@ export default function WeatherPanel({
 							<div key={day.date_epoch}>
 								<ForecastPanel
 									day={day}
-									isDay={cityWeather?.cityInfo?.current.is_day}
+									isDay={cityWeather?.current.is_day}
 									city={cityWeather?.location.name}
 								/>
 							</div>
