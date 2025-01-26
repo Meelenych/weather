@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function ForecastPanel({ day, isDay, city }) {
-	console.log(isDay);
 	return (
 		<div
 			className={`p-3 ${isDay !== 0 ? 'bg-blue-400' : 'bg-blue-900'} text-amber-100
@@ -20,7 +19,9 @@ export default function ForecastPanel({ day, isDay, city }) {
 			</h3>
 			<p>Humidity: {day?.day.avghumidity}</p>
 			<p>
-				Temperature: {day?.day.avgtemp_c} *C or {day?.day.avgtemp_f}*F
+				Temperature: {day?.day.avgtemp_c} <span>&#176;</span>C or{' '}
+				{day?.day.avgtemp_f}
+				<span>&#176;</span>F
 			</p>
 			<p>
 				Visibility: {day?.day.avgvis_km} km or {day?.day.avgvis_miles}
@@ -40,10 +41,14 @@ export default function ForecastPanel({ day, isDay, city }) {
 			<p>Will it rain: {day?.day.daily_will_it_rain}</p>
 			<p>Will it snow: {day?.day.daily_will_it_snow}</p>
 			<p>
-				Max temperature: {day?.day.maxtemp_c}*C or {day?.day.maxtemp_f}*F
+				Max temperature: {day?.day.maxtemp_c}
+				<span>&#176;</span>C or {day?.day.maxtemp_f}
+				<span>&#176;</span>F
 			</p>
 			<p>
-				Min temperature: {day?.day.mintemp_c}*C or {day?.day?.mintemp_f}*F
+				Min temperature: {day?.day.mintemp_c}
+				<span>&#176;</span>C or {day?.day?.mintemp_f}
+				<span>&#176;</span>F
 			</p>
 			<p>
 				Precipitation: {day?.day.totalprecip_mm} mm or {day?.day.totalprecip_in} in

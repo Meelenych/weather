@@ -54,7 +54,7 @@ export default function WeatherPanel({
 				<p className='text-amber-100'>{cityWeather?.current.condition.text}</p>
 				<p className='text-amber-100'>
 					Feels like: {cityWeather?.current.feelslike_c} <span>&#176;</span>C or{' '}
-					{cityWeather?.current.feelslike_f} F
+					{cityWeather?.current.feelslike_f} <span>&#176;</span>F
 				</p>
 				{showMore && (
 					<div
