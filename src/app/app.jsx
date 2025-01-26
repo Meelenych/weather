@@ -259,6 +259,7 @@ export default function Application() {
 						{forecast.map(day => (
 							<div key={day.date_epoch}>
 								<ForecastPanel
+									hour={day.hour}
 									day={day}
 									isDay={cityWeather?.cityInfo?.current.is_day}
 									city={cityWeather?.cityInfo.location.name}

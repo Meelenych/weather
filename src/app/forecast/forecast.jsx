@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import HourForecastPanel from '../hour/hourForecastPanel';
+import { uvIndex } from '../../helpers/uvIndex';
 
-export default function ForecastPanel({ day, isDay, city }) {
+export default function ForecastPanel({ day, hour, isDay, city }) {
 	const [showHourly, setShowHourly] = useState(false);
-  const toggleHourly = () => {
+	const toggleHourly = () => {
 		setShowHourly(!showHourly);
 	};
-
 	return (
 		<div
 			className={`p-3 ${isDay !== 0 ? 'bg-blue-400' : 'bg-blue-900'} text-amber-100
@@ -23,29 +23,17 @@ export default function ForecastPanel({ day, isDay, city }) {
 						: ''}
 				</span>
 			</h3>
-			<p>Humidity: {day?.day.avghumidity}</p>
 			<p>
+				<img
+					src={day ? `http://${day?.day?.condition?.icon.slice(2)}` : 'Loading...'}
+				/>
+			</p>
+			<p className='text-amber-300'>{day?.day.condition?.text}</p>
+			<p className='text-amber-300'>
 				Temperature: {day?.day.avgtemp_c} <span>&#176;</span>C or{' '}
 				{day?.day.avgtemp_f}
 				<span>&#176;</span>F
 			</p>
-			<p>
-				Visibility: {day?.day.avgvis_km} km or {day?.day.avgvis_miles}
-			</p>
-			<p>
-				<img
-					src={day ? `http://${day?.day.condition?.icon.slice(2)}` : 'Loading...'}
-				/>
-			</p>
-			<p>Conditions: {day?.day.condition?.text}</p>
-			<p>
-				Wind Speed: {day?.day.maxwind_kph} kmph or {day?.day.maxwind_mph} mph
-			</p>
-			<p>UV Index: {day?.day.uv}</p>
-			<p>Chance of rain: {day?.day.daily_chance_of_rain}</p>
-			<p>Chance of snow: {day?.day.daily_chance_of_snow}</p>
-			<p>Will it rain: {day?.day.daily_will_it_rain}</p>
-			<p>Will it snow: {day?.day.daily_will_it_snow}</p>
 			<p>
 				Max temperature: {day?.day.maxtemp_c}
 				<span>&#176;</span>C or {day?.day.maxtemp_f}
@@ -56,37 +44,52 @@ export default function ForecastPanel({ day, isDay, city }) {
 				<span>&#176;</span>C or {day?.day?.mintemp_f}
 				<span>&#176;</span>F
 			</p>
+			<p>Humidity: {day?.day.avghumidity} %</p>
 			<p>
-				Precipitation: {day?.day.totalprecip_mm} mm or {day?.day.totalprecip_in} in
+				Visibility: {day?.day.avgvis_km} km or {day?.day.avgvis_miles} mi
 			</p>
-			<p>Snowfall: {day?.day.totalsnow_cm} cm</p>
-			<p>Is sun visible: {day?.astro.is_sun_up ? 'yes' : 'no'}</p>
+			<p>
+				Wind Speed: {day?.day.maxwind_kph} kmph or {day?.day.maxwind_mph} mph
+			</p>
+			<p>UV Index: {uvIndex(day?.day.uv)}</p>
+			{day?.day.daily_chance_of_rain !== 0 && (
+				<p>Chance of rain: {day?.day.daily_chance_of_rain} %</p>
+			)}
+			{day?.day.daily_chance_of_snow !== 0 && (
+				<p>Chance of snow: {day?.day.daily_chance_of_snow} %</p>
+			)}
+			<p>Will it rain: {day?.day.daily_will_it_rain ? 'yes' : 'no'}</p>
+			{day?.day.daily_chance_of_snow !== 0 && (
+				<p>Will it snow: {day?.day.daily_will_it_snow ? 'yes' : 'no'}</p>
+			)}
+			{day?.day.totalprecip_mm !== 0 && (
+				<p>
+					Precipitation: {day?.day.totalprecip_mm} mm or {day?.day.totalprecip_in} in
+				</p>
+			)}
+			{day?.day.totalsnow_cm !== 0 && <p>Snowfall: {day?.day.totalsnow_cm} cm</p>}
 			<p>Sunrise: {day?.astro.sunrise}</p>
 			<p>Sunset: {day?.astro.sunset}</p>
-			<p>Is moon visible: {day?.astro.is_moon_up ? 'yes' : 'no'}</p>
-			<p>Moonrise: {day?.astro.moonrise}</p>
-			<p>Moonset: {day?.astro.moonset}</p>
-			<p>Moon illumination: {day?.astro.moon_illumination}</p>
-			<p>Moon phase : {day?.astro.moon_phase}</p>
-
-			<p>
-				Weather alerts:{' '}
-				{day?.alerts?.length > 0
-					? day?.alerts.map(alert => alert.message).join(', ')
-					: 'No weather alerts'}
+			<p className='text-neutral-400'>Moonrise: {day?.astro.moonrise}</p>
+			<p className='text-neutral-400'>Moonset: {day?.astro.moonset}</p>
+			<p className='text-neutral-400'>
+				Moon illumination: {day?.astro.moon_illumination}
 			</p>
-      <button
-							className={`mt-2 border w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1 hover:border-orange-500 active:bg-orange-500 active:border-orange-500`}
-							onClick={() => toggleHourly()}>
-							{showHourly ? 'Hide hourly forecast' : 'Show hourly forecast'}
-						</button>
-			{showHourly && <HourForecastPanel />}
+			<p className='text-neutral-400'>Moon phase : {day?.astro.moon_phase}</p>
+
+			<button
+				className={`mt-2 border w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1 hover:border-orange-500 active:bg-orange-500 active:border-orange-500`}
+				onClick={() => toggleHourly()}>
+				{showHourly ? 'Hide hourly forecast' : 'Show hourly forecast'}
+			</button>
+			{showHourly && <HourForecastPanel hour={hour} />}
 		</div>
 	);
 }
 
 ForecastPanel.propTypes = {
 	day: PropTypes.object,
+	hour: PropTypes.object,
 	// unpin: PropTypes.func,
 	isDay: PropTypes.number,
 	city: PropTypes.string,
