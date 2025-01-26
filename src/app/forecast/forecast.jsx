@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import HourForecastPanel from '../hour/hourForecastPanel';
 
 export default function ForecastPanel({ day, isDay, city }) {
+	const [showHourly, setShowHourly] = useState(false);
+  const toggleHourly = () => {
+		setShowHourly(!showHourly);
+	};
+
 	return (
 		<div
 			className={`p-3 ${isDay !== 0 ? 'bg-blue-400' : 'bg-blue-900'} text-amber-100
@@ -69,6 +75,12 @@ export default function ForecastPanel({ day, isDay, city }) {
 					? day?.alerts.map(alert => alert.message).join(', ')
 					: 'No weather alerts'}
 			</p>
+      <button
+							className={`mt-2 border w-full text-blue-800 font-medium text-xl rounded-md bg-amber-300 p-1 hover:border-orange-500 active:bg-orange-500 active:border-orange-500`}
+							onClick={() => toggleHourly()}>
+							{showHourly ? 'Hide hourly forecast' : 'Show hourly forecast'}
+						</button>
+			{showHourly && <HourForecastPanel />}
 		</div>
 	);
 }
