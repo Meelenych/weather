@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ForecastPanel from '../forecast/forecast';
+import ForecastPanel from '../forecast/ForecastPanel';
 import Clock from '../../clock/clock';
 import { windScale } from '../../helpers/wind';
 import { pressureScale } from '../../helpers/pressure';
@@ -151,6 +151,7 @@ export default function WeatherPanel({
 							<div key={day.date_epoch}>
 								<ForecastPanel
 									day={day}
+									hour={day.hour}
 									isDay={cityWeather?.current.is_day}
 									city={cityWeather?.location.name}
 								/>

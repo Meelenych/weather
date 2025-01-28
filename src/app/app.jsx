@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import WeatherPanel from './weatherPanel/weatherPanel';
-import ForecastPanel from './forecast/forecast';
+import WeatherPanel from './weatherPanel/WeatherPanel';
+import ForecastPanel from './forecast/ForecastPanel';
 import axios from 'axios';
 import { uid } from 'uid';
 import { toast } from 'react-toastify';
 import { url, forecastUrl } from '../api/api';
 import { fetchGeopify } from '../api/geopify';
 import not_found from '../images/not_found.JPEG';
-import { stringify } from 'postcss';
 
 export default function Application() {
 	const [loading, setLoading] = useState(false);

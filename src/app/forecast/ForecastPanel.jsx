@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import HourForecastPanel from '../hour/hourForecastPanel';
+import HourForecastPanel from '../hour/HourForecastPanel';
 import { uvIndex } from '../../helpers/uvIndex';
 
 export default function ForecastPanel({ day, hour, isDay, city }) {
@@ -82,17 +82,19 @@ export default function ForecastPanel({ day, hour, isDay, city }) {
 				onClick={() => toggleHourly()}>
 				{showHourly ? 'Hide hourly forecast' : 'Show hourly forecast'}
 			</button>
-			{showHourly && <HourForecastPanel hour={hour} />}
+			{showHourly && (
+				<HourForecastPanel
+					hour={hour}
+					toggleHourly={toggleHourly}
+				/>
+			)}
 		</div>
 	);
 }
 
 ForecastPanel.propTypes = {
 	day: PropTypes.object,
-	hour: PropTypes.object,
-	// unpin: PropTypes.func,
+	hour: PropTypes.array,
 	isDay: PropTypes.number,
 	city: PropTypes.string,
-	// lastUpdate: PropTypes.string,
-	// update: PropTypes.func,
 };
