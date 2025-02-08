@@ -4,17 +4,29 @@ import PropTypes from 'prop-types';
 import closeIcon from '../../images/close.svg';
 
 export default function HourForecastPanel({ hour, toggleHourly }) {
+	console.log('hour', hour);
 	// Transform the data to match ChartTable's requirements
 	const chartData = hour?.map(hr => ({
-		time: hr.time?.slice(10) || '', // Extract hour from time (fallback to empty string)
+		time: hr.time?.slice(10) || '',
+		// Extract hour from time (fallback to empty string)
 		feelslikeC: hr.feelslike_c || 0,
 		feelslikeF: hr.feelslike_f || 0,
 	}));
 
+  const formattedTime = hour[0]?.time
+  ? new Date(hour[0].time).toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    })
+  : 'N/A';
+
 	return (
-		<div className='mt-4 absolute top0 md:top-1/2 left-1/2 transform -translate-x-1/2 translate-y-0 md:-translate-y-1/2 w-[360px] md:w-[1024px] z-50 bg-black/75 p-5 shadow-[0_0_30px_8px] shadow-amber-100'>
+		<div className='mt-4 absolute top0 md:top-1/2 left-1/2 transform -translate-x-1/2 translate-y-0 md:-translate-y-1/2 w-full max-w-[1024px] z-50 bg-black/75 p-5 shadow-[0_0_30px_8px] shadow-amber-100'>
 			<h2 className='text-left text-xl font-bold text-amber-300 flex mb-3 justify-between'>
-				Hourly Forecast Panel{' '}
+				Hourly Forecast:{' '}
+				{formattedTime}
 				<button
 					className={`border active:scale-90 rounded-md bg-amber-500`}
 					onClick={() => toggleHourly()}>
